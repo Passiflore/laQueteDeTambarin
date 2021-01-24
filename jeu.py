@@ -1,55 +1,12 @@
+vie = 150
+charisme = 10
+force = 20
+argent = 100
+inventaire =[]
+
+
+# 1ere partie du jeu 
 def TutoChoix1(choix1):
-
-  while choix1 != 5:
-   if choix1 ==  1:
-     print('Vous vous dirigez vers votre bureau')
-     suite = input()
-     print('Un vieux mac de 2012. On fait avec ce qu’on peut…')
-     suite = input()
-     print('Un carnet et une plume… Il faudrait continuer ce roman un jour. Ce serait bien de réussir à devenir un célèbre auteur tel Michel Bussi.')
-     suite = input()
-
-   if choix1 == 2:
-     print('Vous vous dirigez vers votre bibliothèque')
-     suite = input()
-     print("C'est une vieille bibliothèque en bois de sapin, elle sent comme les vieux livres qui la compose.")
-     print('Il y a là des livres, des histoires, du savoir... toutes ces ouvrages vous les connaissez presque par coeur')
-     suite = input()
-     print("Vous balayez les titres du regard")
-     suite = input()
-     print('Des livres sur la magie, sur les meilleurs lieux secrets de Tambarin, sur des contrées lointaines au-délà des mers')
-     print("Des enquêtes passionantes comme 'le mystère de l'écharpe verte' ou 'Qui a tué les villageois ?', ")
-     print("il y a aussi des livres remplis de savoir comme 'coder en react pour les nuls' ou 'comment être un bon imposteur' ou sinon 'Les secrets de Linkedin par SDT'")
-     suite = input()
-
-   if choix1 == 3:
-     print('Vous vous dirigez vers votre fenêtre')
-     suite = input()
-     print('Vous pouvez distinguer le clocher du village,')
-     suite = input()
-     print('Au loin, on peut voir les montagnes interdites et le soleil, déjà bien haut dans le ciel')
-     suite = input()
-     print('Il fait beau aujourd’hui, non ?')
-     suite = input()
-
-   if choix1 == 4:
-     print ('Vous vous dirigez vers votre armoire')
-     suite = input()
-     print("Elle a toujours été là et elle le restera toujours")
-     suite = input()
-     print ('Littéralement, elle pèse une tonne et ne peut bouger. ')
-     suite = input()
-     print ('Comment n’a-t-elle pas défoncé le sol ? ')
-     suite = input()
-
-   print('Examinez:')
-   print('1.Le bureau')
-   print('2.La bibliothèque')
-   print('3.La fenêtre')
-   print('4.L’armoire')
-   print('5.La porte')
-   choix1 = int(input())
-
 
   while choix1 != 5:
    if choix1 ==  1:
@@ -104,8 +61,6 @@ def TutoChoix1(choix1):
 def sortir(peur):
   if peur == 2: 
     return print("Reprends toi, il est grand temps d'affronter le monde. C'est la même chose tous les jours et ça ne changera jamais")
-  if peur == 2: 
-    return print("Reprends toi, il est grand temps d'affronter le monde. C'est la même chose tous les jours et ça ne changera jamais")
 
 def nomSexe(nom,sexe):
   monBrave = "mon brave"
@@ -136,48 +91,8 @@ def nomSexe(nom,sexe):
     suite = input()
     print("Gaston: Merci, heureux de te renconter")
     return monBrave
-  monBrave = "mon brave"
-  # if nom == "Triceratops":
-  #   vie = vie + 10
-  #   print("Votre vie est de",vie)
-  # if nom == "Boubou":
-  #   print("Bonus de crâne chauve")
-  #   charisme = charisme + 20
-  #   print("Votre charisme est de", charisme)
-  if sexe == 1:
-    monBrave = "jeune fille"
-    print("Moi, je suis",nom,"la fille de la gérante de ce bar. Je l’aide en cuisine. Bienvenue à vous dans notre beau village !")
-    suite = input()
-    print("Gaston: Merci jeune fille")
-    return monBrave
-  elif sexe == 2:
-    monBrave = "mon brave"
-    print("Moi, je suis",nom,"le fils de la gérante de ce bar. Je l’aide en cuisine. Bienvenue à vous dans notre beau village !")
-    suite = input()
-    print("Gaston: Merci jeune homme")
-    return monBrave
-  elif sexe == 3:
-    monBrave = "héros"
-    print("Comment vous définissez vous?")
-    sexe2 = input()
-    print("Moi, je suis",nom,"je suis",sexe2,"enfant de la gérante de ce bar. Je l’aide en cuisine. Bienvenue à vous dans notre beau village !")
-    suite = input()
-    print("Gaston: Merci, heureux de te renconter")
-    return monBrave
 
 def choixDeVie(cVie):
-  if cVie == 2: 
-    print('Vous continuez votre vie, et l’auberge continue de bien marcher.')
-    suite = input()
-    print('L’auberge devient connue de tout le royaume grâce à votre histoire, narrée dans les journaux')
-    suite = input()
-    print('et notamment par Christophe Hondelatte, rédacteur en Chef du magazine criminel FELA stories.')
-    suite = input()
-    print('Vous avez fait de belles funérailles à votre mère, mais n’avez jamais trouvé son tueur.')
-    suite = input()
-    print('Vous êtes rongé de regrets et vous ne finirez jamais heureux.')
-    suite = input()
-    return GameOver
   if cVie == 2: 
     print('Vous continuez votre vie, et l’auberge continue de bien marcher.')
     suite = input()
@@ -257,21 +172,22 @@ def choixDirection(direction):
     print("3.Aller à droite")
     direction = int(input())
 
-def choixArme(armement):
+def choixArme(armement, argent):
   if armement == 1 and argent >= 150:
     arme = "arc"
     return argent-150, arme
   elif armement == 2 and argent >= 100:
     arme = "hache"
+    print(argent)
     return  argent-100, arme
     print("Vous a choisissez")
   elif armement == 3 and argent >= 25:
     arme = "bâton"
-    return argent-100 , arme
+    return argent-25 , arme
   elif armement == 4 and argent >= 20:
     return argent-20, arme
   else:
-    print("t'as pas assez d'argent pour cela refais un choix:")
+    print("Vous n'avez pas assez d'argent pour cela refaites un choix:")
     print("Vous choisissez:")
     print("1.Un arc/arbalète (150 pièces)")
     print("2.Une hache (100 pièces)")
@@ -279,7 +195,6 @@ def choixArme(armement):
     print("4.Un marteau (20 pièces)")
     armement = int(input())
     choixArme(armement)
-
 
 def Intro(): 
   #Commecer l'intro
@@ -436,7 +351,6 @@ def Intro():
   suite = input()
   print("Il vous reste une petite place, mais vous ne savez pas quel choix faire.")
   suite = input()
-  argent = 100
 
   #ObjetDepart
   print("Qu’est-ce que vous y mettez ? (1 seul choix)")
@@ -451,7 +365,7 @@ def Intro():
       print("Vous devez faire un choix")
     pass
 
-  objet = choixObjetDepart(objetDepart)
+  inventaire = choixObjetDepart(objetDepart)
 
   print("Maintenant que vous êtes fin prêt, vous dites au-revoir à la maison de votre enfance et la fermez à clé.")
   suite = input()
@@ -492,6 +406,7 @@ def Intro():
   suite = input()
   print("Commerçant: Faites votre choix… Je vous fait une ristourne pour votre premier achat, votre cause est noble… ")
   suite = input()
+  argent = 100
   print("Vous disposez de",argent,"pièces")
   print("Vous choisissez:")
   print("1.Un arc/arbalète (150 pièces)")
@@ -499,7 +414,7 @@ def Intro():
   print("3.Un bâton (25 pièces)")
   print("4.Un marteau (20 pièces)")
   armement = int(input())
-  argent, arme = choixArme(armement)
+  argent, arme = choixArme(armement,argent)
   print("Vous disposez maintenant de", arme, "et il vous reste", argent , "pièces")
 
   
@@ -528,46 +443,47 @@ def Intro():
   suite = input()
   print("mais il vous faut faire face afin de réussir à rendre justice pour votre mère…")
   suite = input()
-  
-nom = "toto"
 
-def magasin():
+  return inventaire, argent, arme, monBrave, nom
+
+
+# 2eme partie du jeu
+def magasin(inventaire, argent, arme, monBrave, nom):
   print("Vous retournez au magasin général")
-  print("Ah, te revoilà", nom, "")
+  print("Ah, te revoilà", nom, "y a t-il eu de l'avancement dans ta quête ?")
 
-def tuRebrrousses (rebrousser):
-  if rebrousser1 == 2:
+def tuRebrrousses (rebrousser, inventaire, argent, arme, monBrave, nom):
+  if rebrousser == 2:
     print("Les forêts ça fait toujours peur, c'est inquiétant, il serait plus judicieux de rebrousser chemin...")
     suite = input()
-    magasin ()
-    foret ()
+    magasin (inventaire, argent, arme, monBrave, nom)
+    foret (inventaire, argent, arme, monBrave, nom)
 
-def foret():
+def foret(inventaire, argent, arme, monBrave, nom):
+  #niv 1
   print("Vous commencez votre aventure et suivez votre prodigieux sens de l’orientation,")
   suite = input()
   print("vous dirigeant jusqu’à une grande forêt.")
   suite = input()
-  #niv 1
   print("Que faire ?")
   print("1.Entrer dans la forêt")
   print("2.Rebrousser chemin")
-  rebrousser1  = None
+  rebrousser  = None
   while rebrousser not in [1, 2]:
     try:
       rebrousser = int(input())
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrrousses (rebrousser)
+  tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom)
 
 
-	 
+	#niv2
   print("Cette forêt est sombre et pleine de mystères…")
   suite = input()
   print("Les oiseaux volent…")
   suite = input()
   #combat
-  #niv2
   print("Que faire ?")
   print("1.Continuer")
   print("2.Rebrousser chemin")
@@ -578,14 +494,74 @@ def foret():
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrrousses (rebrousser)
+  tuRebrrousses (rebrousser, inventaire, argent, arme, monBrave, nom)
+  
+  #niv3
+  print("Vous trouvez un bâton couvert de mousse")
+  if "couteau" in inventaire:
+    print("Quelques petits coups de couteau...")
+    suite = input()
+    print("TADAM ! Un pieu en bois")
+    inventaire.append("Pieu")
+  else :
+    print("le jetter")
+  suite = input()
+  print("Que faire ?")
+  print("1.Continuer")
+  print("2.Rebrousser chemin")
+  rebrousser  = None
+  while rebrousser not in [1, 2]:
+    try:
+      rebrousser = int(input())
+    except ValueError:
+      print("Vous devez faire un choix")
+    pass
+  tuRebrrousses (rebrousser, inventaire, argent, arme, monBrave, nom)
+
+  #niv4
+  print("Vous arrivez à l’orée d’une clairière, qui possède un magnifique lac. Dans l’eau, une femme profite de la chaleur du soleil sur son corps.")
+  suite = input()
+  print("Parler à la femme")
+  suite = input()
+  print("Femme: Bonjour mon enfant. Veux-tu que je te lise ton avenir ?")
+  suite = input()
+  print("Vous: Vous me semblez bien sage, que pouvez-vous me dire sur mon futur ?")
+  suite = input()
+  print("Femme: Je vois...")
+  suite = input()
+  print("Femme: dans l'eau claire...")
+  suite = input()
+  print("un avenir incertain...")
+  suite = input()
+
+  print("Que faire ?")
+  print("1.Continuer")
+  print("2.Rebrousser chemin")
+  rebrousser  = None
+  while rebrousser not in [1, 2]:
+    try:
+      rebrousser = int(input())
+    except ValueError:
+      print("Vous devez faire un choix")
+    pass
+  tuRebrrousses (rebrousser, inventaire, argent, arme, monBrave, nom)
+
+  #niv5
+  print("Vous vous enfoncez dans la forêt")
+  if "loupe" in inventaire:
+    print("En examinant les arbres vous trouvez des baies comestibles")
+    inventaire.append("baie")
+  print("Vous croisez un écureuil et sortez de la forêt")
   
   #Combat	 
  
-def Aventure(): 
+def Aventure(inventaire, argent, arme, monBrave, nom): 
   print ("Commencer l'aventure !")
   suite = input()
-  foret ()
+  foret (inventaire, argent, arme, monBrave, nom)
 
-Intro()
-Aventure()
+def Jeu():
+  inventaire, argent, arme, monBrave, nom = Intro()
+  Aventure(inventaire, argent, arme, monBrave, nom)
+
+Jeu()
