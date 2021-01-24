@@ -1,9 +1,20 @@
-vie = 150
+vie = 100
 charisme = 10
 force = 20
 argent = 100
 inventaire =[]
 
+#Global imports
+from random import *
+import secrets
+
+#Slow reading system
+import sys, time
+def print_slow(str):
+    for letter in str:
+        sys.stdout.write(letter)
+        sys.stdout.flush()
+        time.sleep(0.1)
 
 # 1ere partie du jeu 
 def TutoChoix1(choix1):
@@ -187,14 +198,14 @@ def choixArme(armement, argent):
   elif armement == 4 and argent >= 20:
     return argent-20, arme
   else:
-    print("Vous n'avez pas assez d'argent pour cela refaites un choix:")
+    print("Vous n'avez pas assez d'argent pour cela, refaites un choix:")
     print("Vous choisissez:")
     print("1.Un arc/arbalète (150 pièces)")
     print("2.Une hache (100 pièces)")
     print("3.Un bâton (25 pièces)")
     print("4.Un marteau (20 pièces)")
     armement = int(input())
-    choixArme(armement)
+    choixArme(armement, argent)
 
 def Intro(): 
   #Commecer l'intro
@@ -431,11 +442,11 @@ def Intro():
   suite = input()
   print("Vous: Merci… ")
   suite = input()
-  print("Sortir du magasin général")
+  print("Vous sortez du magasin")
   suite = input()
   print("Il est temps de partir maintenant… ")
   suite = input()
-  print("Se rendre à gauche")
+  print("Vous vous rendez à gauche")
   suite = input()
   print("Vous arrivez rapidement aux portes de village.")
   suite = input()
@@ -446,6 +457,54 @@ def Intro():
 
   return inventaire, argent, arme, monBrave, nom
 
+#Combat	foret 
+def fightLevel1(vieTotale):
+  vieRestante = vieTotale
+  youAlive = True
+  forceMin = 5
+  forceMax = 15
+
+  monsters = ["rat", "sanglier", "troll", "blaireau", "serpent", "crapeau", "feu follet"]
+  monstersLifeChoice = [10, 15, 15, 20, 25, 30]
+  monsterLife = secrets.choice(monstersLifeChoice)
+
+  print("Vous vous êtes trop enfoncés dans la forêt.")
+  suite = input()
+  print("Vous arrivez face à un", secrets.choice(monsters), "et un", secrets.choice(monsters),".")
+  print("\n", "-" * 50, "\n")
+
+  while vieRestante >= 0 and monsterLife > 0 :
+    yourAttack = randint(forceMin, forceMax)
+    monsterAttack = randint(2, 10)
+
+    suite = input()
+    print("Vous avez", vieRestante, "points de vie")
+    suite = input()
+    print("Les monstres ont", monsterLife, "points de vie.")
+    suite = input()
+    print("Vous frappez les monstres et leur enlevez", yourAttack, "points de vie.")
+    monsterLife = monsterLife - yourAttack
+    suite = input()
+
+    if monsterLife <= 0 :
+      monsterAlive = False
+      print("\n", "-" * 50, "\n")
+      print("Les monstres sont morts !")
+      suite = input()
+      print("Vouz continuez votre route...")
+      return vieRestante
+    elif vieRestante <= 0 :
+      youAlive = False
+      print("Vous êtes mort !")
+      suite = input()
+      print("Un passant vous a retrouvé et vous a ramené au village.")
+      suite = input()
+      print("Vous vous retrouvez au magasin général.")
+      magasin()
+      return vieRestante
+    else : print("Les monstres vous frappent et vous enlèvent", monsterAttack, "points de vie.")
+    vieRestante = vieRestante - monsterAttack
+    suite = input()
 
 # 2eme partie du jeu
 def magasin(inventaire, argent, arme, monBrave, nom):
@@ -454,12 +513,15 @@ def magasin(inventaire, argent, arme, monBrave, nom):
 
 def tuRebrrousses (rebrousser, inventaire, argent, arme, monBrave, nom):
   if rebrousser == 2:
-    print("Les forêts ça fait toujours peur, c'est inquiétant, il serait plus judicieux de rebrousser chemin...")
+    print_slow("Vous : Les forêts ça fait toujours peur, c'est inquiétant, il serait plus judicieux de rebrousser chemin...")
     suite = input()
     magasin (inventaire, argent, arme, monBrave, nom)
     foret (inventaire, argent, arme, monBrave, nom)
 
 def foret(inventaire, argent, arme, monBrave, nom):
+
+  vieTotale = 100
+
   #niv 1
   print("Vous commencez votre aventure et suivez votre prodigieux sens de l’orientation,")
   suite = input()
@@ -477,13 +539,14 @@ def foret(inventaire, argent, arme, monBrave, nom):
     pass
   tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom)
 
+  vieTotale = fightLevel1(vieTotale)
 
 	#niv2
+  suite = input()
   print("Cette forêt est sombre et pleine de mystères…")
   suite = input()
   print("Les oiseaux volent…")
   suite = input()
-  #combat
   print("Que faire ?")
   print("1.Continuer")
   print("2.Rebrousser chemin")
@@ -494,18 +557,21 @@ def foret(inventaire, argent, arme, monBrave, nom):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrrousses (rebrousser, inventaire, argent, arme, monBrave, nom)
+  tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom)
+
+  vieTotale = fightLevel1(vieTotale)
   
   #niv3
+  suite = input()
   print("Vous trouvez un bâton couvert de mousse")
+  suite = input()
   if "couteau" in inventaire:
-    print("Quelques petits coups de couteau...")
+    print_slow("Vous : Quelques petits coups de couteau...")
     suite = input()
-    print("TADAM ! Un pieu en bois")
+    print_slow("Vous : TADAM ! Un pieu en bois")
     inventaire.append("Pieu")
   else :
-    print("le jetter")
-  suite = input()
+    print("Vous le jettez")
   print("Que faire ?")
   print("1.Continuer")
   print("2.Rebrousser chemin")
@@ -516,25 +582,29 @@ def foret(inventaire, argent, arme, monBrave, nom):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrrousses (rebrousser, inventaire, argent, arme, monBrave, nom)
+  tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom)
+
+  vieTotale = fightLevel1(vieTotale)
 
   #niv4
+  suite = input()
   print("Vous arrivez à l’orée d’une clairière, qui possède un magnifique lac. Dans l’eau, une femme profite de la chaleur du soleil sur son corps.")
   suite = input()
   print("Parler à la femme")
   suite = input()
-  print("Femme: Bonjour mon enfant. Veux-tu que je te lise ton avenir ?")
+  print_slow("\033[1;32;40m Femme: Bonjour mon enfant. Veux-tu que je te lise ton avenir ?")
   suite = input()
-  print("Vous: Vous me semblez bien sage, que pouvez-vous me dire sur mon futur ?")
+  print_slow("\033[1;37;40m Vous: Vous me semblez bien sage, que pouvez-vous me dire sur mon futur ?")
   suite = input()
-  print("Femme: Je vois...")
+  print_slow("\033[1;32;40m Femme: Je vois...")
   suite = input()
-  print("Femme: dans l'eau claire...")
+  print_slow("\033[1;32;40m Femme: dans l'eau claire...")
   suite = input()
-  print("un avenir incertain...")
+  print_slow("\033[1;32;40m Femme: un avenir incertain...")
   suite = input()
+  print("\033[1;33;40m Cela ne vous est pas très utile...\n")
 
-  print("Que faire ?")
+  print("\033[0;37;40m Que faire ?")
   print("1.Continuer")
   print("2.Rebrousser chemin")
   rebrousser  = None
@@ -544,22 +614,27 @@ def foret(inventaire, argent, arme, monBrave, nom):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrrousses (rebrousser, inventaire, argent, arme, monBrave, nom)
+  tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom)
 
+  vieTotale = fightLevel1(vieTotale)
+  
   #niv5
+  suite = input()
   print("Vous vous enfoncez dans la forêt")
   if "loupe" in inventaire:
     print("En examinant les arbres vous trouvez des baies comestibles")
-    inventaire.append("baie")
+    inventaire.append(baie)
   print("Vous croisez un écureuil et sortez de la forêt")
+  print("Il vous reste", vieTotale, "points de vie")
   
-  #Combat	 
- 
+#Début de l'aventure
+#Run the game different parts of the game
 def Aventure(inventaire, argent, arme, monBrave, nom): 
   print ("Commencer l'aventure !")
   suite = input()
   foret (inventaire, argent, arme, monBrave, nom)
 
+#Run the game
 def Jeu():
   inventaire, argent, arme, monBrave, nom = Intro()
   Aventure(inventaire, argent, arme, monBrave, nom)
