@@ -1,4 +1,4 @@
-vie = 100
+vieTotale = 100
 charisme = 10
 force = 20
 argent = 100
@@ -14,7 +14,7 @@ def print_slow(str):
     for letter in str:
         sys.stdout.write(letter)
         sys.stdout.flush()
-        time.sleep(0.1)
+        time.sleep(0.05)
 
 # 1ere partie du jeu 
 def TutoChoix1(choix1):
@@ -138,13 +138,8 @@ def choixObjetDepart(objetDepart):
     return inventaire
 
 def choixDirection(direction):
-  precedentDirection ="droite"
   while direction != 3:
     if direction == 1: 
-      if precedentDirection =="face":
-        print("Vous vous dirigez vers l’entrée de la ville.")
-        print("Il vous manque peut être quelque chose avant d'affronter la ville")
-      else: 
         print("Vous rencontrez des enfants qui jouent avec un papillon")
         suite = input()
         print("Qu’avez-vous vu passer ?")
@@ -155,15 +150,19 @@ def choixDirection(direction):
           print("Inspecter le papillon : il a les pattes pleines de poussière…")
           suite = input()
         print("Rebrousser Chemin")
-        precedentDirection ="gauche"
     elif direction == 2:
-      precedentDirection =="face"
       print("Vous arrivez à l’entrée d’une maison. Vous toquez mais personne ne répond. La porte est entre-ouverte…")
       suite = input()
       print("Vous...")
       print("1.Entrez")
       print("2.Rebroussez chemin")
-      rebrousse = int(input())
+      revenir  = None
+      while revenir not in [1, 2, 3]:
+        try:
+          revenir = int(input())
+        except ValueError:
+          print("Vous devez faire un choix")
+        pass
       if revenir == 1:
         print("Une femme nous hurle dessus et nous menace avec une casserole parce qu’on est rentrés chez elle par effraction")
         suite = input()
@@ -181,7 +180,14 @@ def choixDirection(direction):
     print("1.Aller à gauche")
     print("2.Aller en face")
     print("3.Aller à droite")
-    direction = int(input())
+    direction = None
+    while direction not in [1, 2, 3]:
+      try:
+        direction = int(input())
+      except ValueError:
+        print("Vous devez faire un choix")
+      pass
+    choixDirection(direction)
 
 def choixArme(armement, argent):
   if armement == 1 and argent >= 150:
@@ -204,7 +210,13 @@ def choixArme(armement, argent):
     print("2.Une hache (100 pièces)")
     print("3.Un bâton (25 pièces)")
     print("4.Un marteau (20 pièces)")
-    armement = int(input())
+    armement  = None
+    while armement not in [1, 2, 3, 4]:
+      try:
+        armement = int(input())
+      except ValueError:
+        print("Vous devez faire un choix")
+        pass
     choixArme(armement, argent)
 
 def Intro(): 
@@ -424,18 +436,15 @@ def Intro():
   print("2.Une hache (100 pièces)")
   print("3.Un bâton (25 pièces)")
   print("4.Un marteau (20 pièces)")
-  armement = int(input())
+  armement  = None
+  while armement not in [1, 2, 3, 4]:
+    try:
+      armement = int(input())
+    except ValueError:
+      print("Vous devez faire un choix")
+      pass
   argent, arme = choixArme(armement,argent)
   print("Vous disposez maintenant de", arme, "et il vous reste", argent , "pièces")
-
-  
-  # armement  = None
-  # while armement not in [1, 2, 3, 4]:
-  #   try:
-  #     armement = int(input())
-  #   except ValueError:
-  #     print("Vous devez faire un choix")
-  #     pass
 
   suite = input()
   print("Ce fut un plaisir de commercer avec vous ! Je vous souhaite beaucoup de chance dans votre quête !")
@@ -457,7 +466,7 @@ def Intro():
 
   return inventaire, argent, arme, monBrave, nom
 
-#Combat	foret 
+#Combat foret 
 def fightLevel1(vieTotale):
   vieRestante = vieTotale
   youAlive = True
@@ -511,16 +520,15 @@ def magasin(inventaire, argent, arme, monBrave, nom):
   print("Vous retournez au magasin général")
   print("Ah, te revoilà", nom, "y a t-il eu de l'avancement dans ta quête ?")
 
-def tuRebrrousses (rebrousser, inventaire, argent, arme, monBrave, nom):
+def tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale):
   if rebrousser == 2:
     print_slow("Vous : Les forêts ça fait toujours peur, c'est inquiétant, il serait plus judicieux de rebrousser chemin...")
     suite = input()
     magasin (inventaire, argent, arme, monBrave, nom)
-    foret (inventaire, argent, arme, monBrave, nom)
+    foret (inventaire, argent, arme, monBrave, nom, vieTotale)
 
-def foret(inventaire, argent, arme, monBrave, nom):
+def foret(inventaire, argent, arme, monBrave, nom, vieTotale):
 
-  vieTotale = 100
 
   #niv 1
   print("Vous commencez votre aventure et suivez votre prodigieux sens de l’orientation,")
@@ -537,11 +545,11 @@ def foret(inventaire, argent, arme, monBrave, nom):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom)
+  tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale)
 
   vieTotale = fightLevel1(vieTotale)
 
-	#niv2
+  #niv2
   suite = input()
   print("Cette forêt est sombre et pleine de mystères…")
   suite = input()
@@ -557,7 +565,7 @@ def foret(inventaire, argent, arme, monBrave, nom):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom)
+  tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale)
 
   vieTotale = fightLevel1(vieTotale)
   
@@ -582,7 +590,7 @@ def foret(inventaire, argent, arme, monBrave, nom):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom)
+  tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale)
 
   vieTotale = fightLevel1(vieTotale)
 
@@ -592,19 +600,29 @@ def foret(inventaire, argent, arme, monBrave, nom):
   suite = input()
   print("Parler à la femme")
   suite = input()
-  print_slow("\033[1;32;40m Femme: Bonjour mon enfant. Veux-tu que je te lise ton avenir ?")
-  suite = input()
-  print_slow("\033[1;37;40m Vous: Vous me semblez bien sage, que pouvez-vous me dire sur mon futur ?")
-  suite = input()
-  print_slow("\033[1;32;40m Femme: Je vois...")
-  suite = input()
-  print_slow("\033[1;32;40m Femme: dans l'eau claire...")
-  suite = input()
-  print_slow("\033[1;32;40m Femme: un avenir incertain...")
-  suite = input()
-  print("\033[1;33;40m Cela ne vous est pas très utile...\n")
+  print_slow("\033[1;32;40m Femme: Bonjour mon enfant. Veux-tu que je te lise ton avenir ?\n\033[m")
 
-  print("\033[0;37;40m Que faire ?")
+  print("1.Oui")
+  print("2.Non")
+  avenir  = None
+  while avenir not in [1, 2]:
+    try:
+      avenir = int(input())
+    except ValueError:
+      print("Vous devez faire un choix")
+    pass
+  if avenir == 1:
+    print_slow("\033[1;37;40m Vous: Vous me semblez bien sage, que pouvez-vous me dire sur mon futur ?\033[m")
+    suite = input()
+    print_slow("\033[1;32;40m Femme: Je vois...\033[m")
+    suite = input()
+    print_slow("\033[1;32;40m Femme: dans l'eau claire...\033[m")
+    suite = input()
+    print_slow("\033[1;32;40m Femme: un avenir incertain...\033[m")
+    suite = input()
+    print("\033[1;33;40m Cela ne vous est pas très utile...\n\033[m")
+  
+  print("\033[0;37;40m Que faire ?\033[m")
   print("1.Continuer")
   print("2.Rebrousser chemin")
   rebrousser  = None
@@ -614,7 +632,7 @@ def foret(inventaire, argent, arme, monBrave, nom):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom)
+  tuRebrrousses (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale)
 
   vieTotale = fightLevel1(vieTotale)
   
@@ -623,16 +641,197 @@ def foret(inventaire, argent, arme, monBrave, nom):
   print("Vous vous enfoncez dans la forêt")
   if "loupe" in inventaire:
     print("En examinant les arbres vous trouvez des baies comestibles")
-    inventaire.append(baie)
+    inventaire.append("baie")
   print("Vous croisez un écureuil et sortez de la forêt")
   print("Il vous reste", vieTotale, "points de vie")
+
+  return inventaire, argent, vieTotale
   
+
+def tuRenonce(renoncer,inventaire, argent, vieTotale):
+  if renoncer == 2:
+    print("Vous: Il doit être hanté depuis un moment… j’ai peur des fantômes")
+    # moulin(inventaire, argent, arme, monBrave, nom)
+
+
+def villageAbandonne(inventaire, argent, vieTotale):
+  print("Vous continuez votre aventure, et vos pas vous emmènent à l’orée d’un vieux village.")
+  suite = input()
+  print("Que faire ?")
+  print("1.Entrer dans le village")
+  print("2.Passer son chemin")
+  renoncer = None
+  while renoncer not in [1, 2]:
+    try:
+      renoncer = int(input())
+    except ValueError:
+      print("Vous devez faire un choix")
+    pass
+  tuRenonce(renoncer,inventaire, argent, vieTotale)
+  
+  suite = input()
+  print("Vous entrez dans le village, en ruine. Il reste à peine une ou deux bâtisses qui tiennent debout…")
+  suite = input()
+  print("Vous avancez et vous tombez nez à nez avec un vieux puit en pierres vermoulues")
+  suite = input()
+  print("Vous...")
+  print("1.Ramassez une pierre et la lancez dans le puit")
+  print("2.Laissez ce vieux puit tranquille")
+  puit = None
+  while puit not in [1, 2]:
+    try:
+      puit = int(input())
+    except ValueError:
+      print("Vous devez faire un choix")
+    pass
+  if puit == 1:
+    print("Vous vous baissez pour ramasserr une pierre et vous la laissez tomber dans le puit")
+    suite = input()
+    print("Elle se cogne contre les parrois du puit et vous entendez l'écho de sa chute pendant un long moment...")
+    suite = input()
+    print("Finalement au bout de 5-6 seconde vous entendez enfin un faible bruit d'eau")
+    suite = input()
+    print("Qui aurait cru que ce puit soit si profond !? Comment faisient les villageois pour puiser leur eau ?")
+  print("Que faire ?")
+  print("1.Continuer dans le village")
+  print("2.Renoncer à l'exploration")
+  renoncer = None
+  while renoncer not in [1, 2]:
+    try:
+      renoncer = int(input())
+    except ValueError:
+      print("Vous devez faire un choix")
+    pass
+  tuRenonce(renoncer,inventaire, argent, vieTotale)
+
+  print("Vous continuez votre avancée dans ce qui était surement un village plein de vie autrefois")
+  suite = input()
+  print("Vous passez devant un vieil arbre, surement le dernier résident de ce village...")
+  suite = input()
+  print("Vous vous rapprochez... Cet arbre a du en voir des choses, des mariages, des fêtes de villages, des tempêtes...")
+  if "couteau" in inventaire:
+    print("Vous pouvez, avec votre couteau, inscrire quelque chose sur le tronc de cet arbre. Temoinage de votre passage ")
+    suite = input()
+    print("Vous gravez...")
+    gravure = input()
+  elif "loupe" in inventaire:
+    print("Vous balladez votre main sur le tronc de l'arbre et vous remarquez des petites griffures")
+    suite = input()
+    print("Avec votre loupe, vous examinez de plus près ces petites entailles")
+    suite = input()
+    print("Vous percevez, gravé dans le bois un petit coeur avec l'inscription Al + St")
+    suite = input()
+    print("Vous: Des amoureux prennant cet arbre pour temoin de leur amour... Je me demande ce qu'ils sont devenus...")
+ 
+  suite = input()
+  print("Vous marchez tel un fantôme dans ce lieu abandonné")
+  suite = input()
+  print("Vous arrivez devant une maison abandonée. Ses tuiles manquantes laissent apparaitre son squelette de bois. Tout les carreaux de ses fenêtres sont explosés et le verre est répandu sur le sol")
+  suite = input()
+  print("Ses murs sont infestés de mousse verdatres et tachés de mille et unes traces grisâtres. Les volets en morceaux claquent à chaque coup de vent")
+  suite = input()
+  print("La porte ou enfin ce qu'il en reste est ouverte")
+  print("Que faire ?")
+  print("1.Entrer")
+  print("2.Renoncer à l'exploration")
+  renoncer = None
+  while renoncer not in [1, 2]:
+    try:
+      renoncer = int(input())
+    except ValueError:
+      print("Vous devez faire un choix")
+    pass
+    tuRenonce(renoncer,inventaire, argent, vieTotale)
+
+  print("Vous entrez dans la maison, une forte odeur de sous-bois se dégage de l'interieur")
+  suite = input()
+  print("Le plancher grince sous vos pas. Vous essayez de vous frayer un chemin parmis les meubles en décompositions renversés sur sol")
+  suite = input()
+  print("Le plafond de la maison est devenu la résidence d'une colonie d'araignée ou chaque fissure fait office d'appartement privé")
+  suite = input()
+  print("Vous sentez un courant d'air dans votre nuque")
+  suite = input()
+  print("Vous: Ah, c'est surement le vent...C'est pas très bien isolé ici")
+  suite = input()
+  print("Vous traversez ce qui devait être auparavant une entrée. Ses murs sont remplis de vielles photos de famille jaunies.")
+  suite = input()
+  print("Vous vous rapprochez des portraits. Sous ceux-ci se trouve une vieille commode, il ne lui reste qu'un seul tiroir debout qui semble tenir tout l'ensemble... ensemble")
+  suite = input()
+  print("Ouvrir le tiroir ?")
+  print("1.Oui")
+  print("2.Non")
+  tiroir= None
+  while tiroir not in [1, 2]:
+    try:
+      tiroir = int(input())
+    except ValueError:
+      print("Vous devez faire un choix")
+    pass
+  if tiroir == 1:
+    print("Vous essayer d'ouvrir le tiroir mais il n'a pas l'air de vouloir bouger")
+    suite = input()
+    print("Les pieds solidement encrés sur le plancher sale vous tirez avec de plus en plus de force.")
+    suite = input()
+    print("Le tiroir commence à bouger dans un crissement aigu")
+    suite = input()
+    print("Vous y metter tout ce qu'il vous reste de force et le tiroir fini par ceder et se décrocher de la commode. Vous tombez par-terre et entendez des craquement de bois")
+    suite = input()
+    print("La commode ne pouvant se tenir toute seule s'écroule. Le tiroir encore dans les mains vous vérifiez le contenu...")
+    suite = input()
+    print("Quelques mites, beaucoup de poussière et un petit objet doré...")
+    suite = input()
+    print("Une vieille montre en or ! On doit pouvoir l'échanger contre quelques pièces")
+    suite = input()
+    print("Vous gagnez 25 pièces")
+    argent +25
+
+  print("Vous vous détrournez des photos et vous dirigez vers la suite de la maison. Malheuresement un trou béant vous sépare de ce qui ressemble à un salon. Vous ne pourrez surment pas aller dans une autre pièce. ")
+  suite = input()
+  print("Vous sortez de la maison.")
+  suite = input()
+  print("Vous continuez votre exploration du village en vous enfonçant de plus en plus")
+  suite = input()
+  print("Vous vous arrivez devant le vieux clocher. En entrant, une vieille statue du Christ est posée là.")
+  suite = input()
+  print("Il y a des bancs renversés et des livres de prières sur le sol. Tous les vitraux sont brisés et laisse passer par leur trous la lumière non flitrée du soleil")
+  suite = input()
+  print("Devant vous se dresse une vieille échelle en bois. Elle semble mener au clocher")
+  suite = input()
+  print("Voulez vous vous risquer à l'emprunter ? ")
+  print("1.Oui")
+  print("2.Non")
+  renoncer = None
+  while renoncer not in [1, 2]:
+    try:
+      renoncer = int(input())
+    except ValueError:
+      print("Vous devez faire un choix")
+    pass
+    tuRenonce(renoncer,inventaire, argent, vieTotale)
+  
+  print("Vous atteignez le sommet du clocher")
+  suite = input()
+  print("Vous avez une vue imprenable sur l'ensemble de la contrée")
+  suite = input()
+  if "pull" not in inventaire:
+    print("Il fait froid dans cette vieille bâtisse… Vous auriez dû prendre un pull...")
+    suite = input()
+  print("Vous redescendez")
+  suite = input()
+  print("En chemin, vous êtes agressé par une araignée...Vous perdrez 5 points de vie")
+  vieTotale -5
+  print("Vous sortez du clocher")
+
+  return inventaire, argent, vieTotale
+
+
 #Début de l'aventure
 #Run the game different parts of the game
 def Aventure(inventaire, argent, arme, monBrave, nom): 
   print ("Commencer l'aventure !")
   suite = input()
-  foret (inventaire, argent, arme, monBrave, nom)
+  foret (inventaire, argent, arme, monBrave, nom, vieTotale)
+  villageAbandonne(inventaire, argent, vieTotale)
 
 #Run the game
 def Jeu():
