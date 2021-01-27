@@ -956,6 +956,111 @@ def moulin(inventaire, argent, arme, monBrave, nom, vieTotale):
     vieTotale -2
   return inventaire, argent, arme, monBrave, nom, vieTotale
 
+def tuRebrousse4 (delaisser,inventaire, argent, arme, monBrave, nom, vieTotale):
+ if delaisser == 2:
+   print("Cet endroit à l'air sent le piège... Je préfère ne pas m'y risquer")
+   magasin(inventaire, argent, arme, monBrave, nom, vieTotale)
+ 
+ 
+def enigme (devinette):
+ if devinette == 1:
+   print("Vous: Je ne cherche pas à passer, je cherche juste des informations. Pouvez-vous répondre à mes questions ?")
+   suite = input()
+   print("Homme étrange: Je ne réponds pas aux questions des gens qui ne réponde pas à MA question")
+   suite = input()
+   print("Homme étrange: Je ne réponds pas aux questions des gens qui ne réponde pas à MA question")
+   suite = input()
+   print("Vous...")
+   print("1.Essayez de lui soutirer des informations")
+   print("2.Essayez de répondre à son énigme")
+   print("3.Rebroussez chemin")
+   devinette = None
+   while devinette not in [1, 2, 3]:
+     try:
+       devinette = int(input())
+     except ValueError:
+       print("Vous devez faire un choix")
+     pass
+   enigme(devinette)
+ 
+ elif devinette == 2:
+   print("Vous: Je relève le défi, je vais répondre à votre enigme... ")
+   suite = input()
+   print("Homme étrange: Tu te crois bien intelligent")
+   suite = input()
+   print("Vous: La réponse est...")
+   reponse = input()
+   reponse.lower()
+   if reponse == "homme" or reponse == "l'homme" or reponse == "humain" or reponse == "l'humain":
+     print("Et bien… C’est plutôt surprenant… Mais bon, tout le monde réussit de toute façon. Vous pouvez passer !")
+     continuer(inventaire, argent, arme, monBrave, nom, vieTotale)
+ 
+   else:
+     print("Je vous avais dit que c’était compliqué… Revenez quand vous aurez la solution.")
+     suite = input()
+     print("Vous retournez au magasin")
+     magasin(inventaire, argent, arme, monBrave, nom, vieTotale)
+ 
+ elif devinette == 3:
+   print("Vous: Je ne fais pas confiance à cet homme... passons notre chemin")
+   delaisser = 2
+   tuRebrousse4 (delaisser,inventaire, argent, arme, monBrave, nom, vieTotale)
+ 
+ 
+def pont(inventaire, argent, arme, monBrave, nom, vieTotale):
+ print("Vous continuez votre aventure, et vous tombez rapidement sur un ravin énorme")
+ suite = input()
+ print("Impossible de le traverser. Mais à votre droite, vous voyez un pont suspendu. Vous vous apprrochez")
+ suite = input()
+ print("Soudain, un vieil homme...de petite taille jaillit de sous le pont. ")
+ suite = input()
+ print("Homme étrange: Vous ne passerez pas, manant !")
+ suite = input()
+ print("Vous: Mais… J’ai besoin de passer pour continuer mon aventure")
+ suite = input()
+ print("Homme étrange: Je n’en ai que faire. Pour passer, il faut réussir mon énigme !")
+ suite = input()
+ print("Vous: Quelle est cette énigme ?")
+ suite = input()
+ print("Homme étrange: Eh bien, c’est très simple, mais à la fois très compliqué. Personne ne m’a battu jusqu’à maintenant : qu’est ce qui a 4 pattes le matin, 2 le midi, et 3 le soir ?")
+ suite = input()
+ print("Vous...")
+ print("1.Essayez de lui soutirer des informations")
+ print("2.Essayez de répondre à son énigme")
+ print("3.Rebroussez chemin")
+ devinette = None
+ while devinette not in [1, 2, 3]:
+   try:
+     devinette = int(input())
+   except ValueError:
+     print("Vous devez faire un choix")
+   pass
+ 
+ enigme(devinette)
+ 
+def continuer(inventaire, argent, arme, monBrave, nom, vieTotale):
+ suite = input()
+ if "pain" in inventaire:
+   print("Vous: Merci ! Mais attendez, je me suis embarqué dans une aventure, et j’ai rencontré votre ami le vieux meunier.")
+   suite = input()
+   print("Vous: Il m’a dit que vous m’aideriez… Avez-vous vu passer des personnes louches récemment ?")
+   suite = input()
+   print("Homme étrange: Des personnes louches… Peut être bien. J’ai récemment vu passer une troupe de troubadours… ")
+   suite = input()
+   print("Homme étrange: Ceux-là sont très bizarres… Mais j’ai aussi vu passer un grand homme, très mystérieux, qui avait une longue cape noire et un chapeau pointu.")
+   suite = input()
+   print("Homme étrange: Il s’en est allé très rapidement après avoir voulu me donner de l’argent car il ne trouvait pas la réponse à mon énigme.")
+   suite = input()
+   print("Vous: Je vois… Merci de votre aide !")
+   suite = input()
+   print("Vous continuez votre chemin")
+   suite = input()
+ elif "pain" not in inventaire:
+   print("Vous: Merci beaucoup !")
+   suite = input()
+ 
+ return inventaire, argent, arme, monBrave, nom, vieTotale
+
 
 #Début de l'aventure
 #Run the game different parts of the game
