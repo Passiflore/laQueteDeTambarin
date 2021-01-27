@@ -3,6 +3,7 @@ charisme = 10
 force = 20
 argent = 100
 inventaire =[]
+lieuvisite =[]
 
 #Global imports
 from random import *
@@ -829,10 +830,10 @@ def villageAbandonne(inventaire, argent, arme, monBrave, nom, vieTotale):
 
 
 def tuRebrousse3 (abandonner,inventaire, argent, arme, monBrave, nom, vieTotale):
-  if abandonnerr == 2:
+  if abandonner == 2:
     print("Cet endroit à l'air sent le piège... Je préfère ne pas m'y risquer")
     magasin(inventaire, argent, arme, monBrave, nom, vieTotale)
-    # pont(inventaire, argent, arme, monBrave, nom, vieTotale)
+    pont(inventaire, argent, arme, monBrave, nom, vieTotale)
 
 
 def moulin(inventaire, argent, arme, monBrave, nom, vieTotale):
@@ -908,7 +909,7 @@ def moulin(inventaire, argent, arme, monBrave, nom, vieTotale):
   if soudoyer == 1:
     print("Vous: Peut-être que tout pourrait s'arranger avec un petit billet")
     suite = input()
-    print("Voix d'homme: Oh", monBrave "ça va te couter cher. Je ne suis pas si facile à amadouer")
+    print("Voix d'homme: Oh", monBrave,"ça va te couter cher. Je ne suis pas si facile à amadouer")
     suite = input()
     print("Voix d'homme: Je te donnerai ce que tu veux si tu peux me donner 200 pièces")
     suite = input()
@@ -952,11 +953,9 @@ def moulin(inventaire, argent, arme, monBrave, nom, vieTotale):
     print("Après une bonne nuit de sommeil, vous sortez du moulin...")
     suite = input()
     print("Sur le retour, vous croisez des rats et perdez 2 pv")
-     vieTotale -2
+    vieTotale -2
   return inventaire, argent, arme, monBrave, nom, vieTotale
 
-
-    
 
 #Début de l'aventure
 #Run the game different parts of the game
@@ -966,6 +965,7 @@ def Aventure(inventaire, argent, arme, monBrave, nom):
   foret (inventaire, argent, arme, monBrave, nom, vieTotale)
   villageAbandonne(inventaire, argent, arme, monBrave, nom, vieTotale)
   moulin(inventaire, argent, arme, monBrave, nom, vieTotale)
+  pont(inventaire, argent, arme, monBrave, nom, vieTotale)
 
 #Run the game
 def Jeu():
@@ -973,3 +973,6 @@ def Jeu():
   Aventure(inventaire, argent, arme, monBrave, nom)
 
 Jeu()
+
+
+
