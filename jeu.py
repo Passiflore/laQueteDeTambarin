@@ -1,13 +1,14 @@
 vieTotale = 100
 charisme = 10
-force = 20
+forceMin = 10
+forceMax = 20
 argent = 100
-inventaire =[]
-avancement =[]
-lieuvisite =[]
+inventaire = []
+avancement = []
+lieuvisite = []
 
 #Global imports
-from random import *
+from random import randint
 import secrets
 
 #Slow reading system
@@ -476,53 +477,60 @@ def Intro():
   return inventaire, argent, arme, monBrave, nom
 
 #Combat foret 
-def fightLevel1(vieTotale):
-  vieRestante = vieTotale
-  youAlive = True
-  forceMin = 5
-  forceMax = 15
+def fightLevel1(vieTotale, forceMin, forceMax, argent):
+    argentGagne = None
+    vieRestante = vieTotale
 
-  monsters = ["rat", "sanglier", "troll", "blaireau", "serpent", "crapeau", "feu follet"]
-  monstersLifeChoice = [10, 15, 15, 20, 25, 30]
-  monsterLife = secrets.choice(monstersLifeChoice)
+    monsters = ["rat", "sanglier", "troll",
+                "blaireau", "serpent", "crapeau", "feu follet"]
+    monstersLifeChoice = [10, 15, 15, 20, 25, 30]
+    monsterLife = secrets.choice(monstersLifeChoice)
 
-  print("Vous vous êtes trop enfoncés dans la forêt.")
-  suite = input()
-  print("Vous arrivez face à un", secrets.choice(monsters), "et un", secrets.choice(monsters),".")
-  print("\n", "-" * 50, "\n")
-
-  while vieRestante >= 0 and monsterLife > 0 :
-    yourAttack = randint(forceMin, forceMax)
-    monsterAttack = randint(2, 10)
-
+    print("Vous vous êtes trop enfoncés dans la forêt.")
     suite = input()
-    print("Vous avez", vieRestante, "points de vie")
-    suite = input()
-    print("Les monstres ont", monsterLife, "points de vie.")
-    suite = input()
-    print("Vous frappez les monstres et leur enlevez", yourAttack, "points de vie.")
-    monsterLife = monsterLife - yourAttack
+    print("Vous arrivez face à un", secrets.choice(
+        monsters), "et un", secrets.choice(monsters), ".")
+    print("\n", "-" * 50, "\n")
     suite = input()
 
-    if monsterLife <= 0 :
-      monsterAlive = False
-      print("\n", "-" * 50, "\n")
-      print("Les monstres sont morts !")
-      suite = input()
-      print("Vouz continuez votre route...")
-      return vieRestante
-    elif vieRestante <= 0 :
-      youAlive = False
-      print("Vous êtes mort !")
-      suite = input()
-      print("Un passant vous a retrouvé et vous a ramené au village.")
-      suite = input()
-      print("Vous vous retrouvez au magasin général.")
-      magasin()
-      return vieRestante
-    else : print("Les monstres vous frappent et vous enlèvent", monsterAttack, "points de vie.")
-    vieRestante = vieRestante - monsterAttack
-    suite = input()
+    while vieRestante >= 0 or monsterLife > 0:
+        yourAttack = randint(forceMin, forceMax)
+        monsterAttack = randint(2, 10)
+
+        print("Vous avez", vieRestante, "points de vie")
+        suite = input()
+        print("Les monstres ont", monsterLife, "points de vie.")
+        suite = input()
+
+        if vieRestante > 0:
+            print("Vous frappez les monstres et leur enlevez",
+                  yourAttack, "points de vie.")
+            monsterLife = monsterLife - yourAttack
+            suite = input()
+
+        if monsterLife <= 0:
+            argentGagne = randint(5, 15)
+            print("\n", "-" * 50, "\n")
+            print("Les monstres sont morts !")
+            print("Vous gagnez", argentGagne, "pièces.")
+            print("\n", "-" * 50, "\n")
+            argent = argent + argentGagne
+            return vieRestante, argent
+        elif vieRestante <= 0:
+            print("Vous tombez à terre, exténué.")
+            suite = input()
+            print("...")
+            suite = input()
+            print("Un marchand itinérant vous a trouvé là et vous a ramené au village.")
+            suite = input()
+            print("Vous vous retrouvez au magasin général.")
+            magasin()
+            return vieRestante
+        else:
+            print("Les monstres vous frappent et vous enlèvent",
+                  monsterAttack, "points de vie.")
+        vieRestante = vieRestante - monsterAttack
+        suite = input()
 
 # 2eme partie du jeu
 def magasin(inventaire, argent, arme, monBrave, nom, vieTotale, avancement):
@@ -562,7 +570,7 @@ def magasin(inventaire, argent, arme, monBrave, nom, vieTotale, avancement):
       pass
   argent, arme, vieTotale = acheter (choixMagasin,inventaire, argent, arme, monBrave, nom, vieTotale)
   
-  print("Vous disposez de ",argent,"pièces")
+  print("Vous disposez de",argent,"pièces")
   print("Voulez vous acheter autre chose ?")
   print("1.Oui")
   print("2.Non")
@@ -685,7 +693,7 @@ def tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale,
     suite = input()
     magasin (inventaire, argent, arme, monBrave, nom, vieTotale, avancement)
 
-def foret(inventaire, argent, arme, monBrave, nom, vieTotale, avancement):
+def foret(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement):
   lieuvisite.append("foret")
   avancement = 0
 
@@ -705,9 +713,9 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, avancement):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, avancement )
+  tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement )
 
-  vieTotale = fightLevel1(vieTotale)
+  vieTotale = fightLevel1(vieTotale, forceMin, forceMax, argent)
 
   #niv2
   avancement = 2
@@ -726,9 +734,9 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, avancement):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, avancement)
+  tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement )
 
-  vieTotale = fightLevel1(vieTotale)
+  vieTotale = fightLevel1(vieTotale, forceMin, forceMax, argent)
   
   #niv3
   avancement = 3
@@ -742,6 +750,7 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, avancement):
     inventaire.append("Pieu")
   else :
     print("Vous le jettez")
+    suite = input()
   print("Que faire ?")
   print("1.Continuer")
   print("2.Rebrousser chemin")
@@ -752,9 +761,9 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, avancement):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, avancement)
+  tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement )
 
-  vieTotale = fightLevel1(vieTotale)
+  vieTotale = fightLevel1(vieTotale, forceMin, forceMax, argent)
 
   #niv4
   avancement = 4
@@ -795,9 +804,9 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, avancement):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, avancement)
+  tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement )
 
-  vieTotale = fightLevel1(vieTotale)
+  vieTotale = fightLevel1(vieTotale, forceMin, forceMax, argent)
   
   #niv5
   avancement = 5
@@ -810,7 +819,8 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, avancement):
     suite = input()
   print("Vous croisez un écureuil et sortez de la forêt")
   suite = input()
-  print("Il vous reste", vieTotale, "points de vie")
+  print("Il vous reste", vieTotale, "points de vie.")
+  print("Vous avez", argent, "pièces.")
 
   return inventaire, argent, arme, monBrave, nom, vieTotale
 
@@ -1232,6 +1242,912 @@ def continuer(inventaire, argent, arme, monBrave, nom, vieTotale):
 
  lieuvisite.append("pont")
  return inventaire, argent, arme, monBrave, nom, vieTotale,lieuvisite
+
+def EntreeCiadas():
+    # niv 1
+    print("Vous arrivez à l'orée de la grande ville de Ciadas,")
+    suite = input()
+    print("domaine du roi Olonas, qui règne sur la contrée de Tambarin.")
+    suite = input()
+    print("Que faire ?")
+    print("1. Entrer dans la ville")
+    print("2. Rebrousser chemin")
+    rebrousser = None
+    while rebrousser not in [1, 2]:
+        try:
+            rebrousser = int(input())
+        except ValueError:
+            print("Vous devez faire un choix")
+        pass
+    tuRebrrousses(rebrousser)
+
+    print("Les gardes vous barrent la route")
+    suite = input()
+    print("Garde 1: Halte-là, déclinez votre identité !")
+    suite = input()
+    print(
+        "Vous: Je suis [nom à mettre] de la défunte tavernière de la ville de Qululu")
+    suite = input()
+    print("Garde 2: Je suis désolé pour votre mère...")
+    suite = input()
+    print("Garde 2: Malheureusement nous ne pouvons vous laisser entrer.")
+    suite = input()
+    print("Garde 1: Aujourd'hui est un jour très spécial pour le seigneur, ")
+    suite = input()
+    print("Garde 1: Seul les habitants et les pointures du royaume sont autorisés à entrer.")
+    suite = input()
+    print("Il va vous falloir trouver un autre moyen d'entrer dans le royaume...")
+    print("1. Faire le tour de la forteresse")
+    print("2. Rebrousser chemin")
+    print("3. Aller chercher de l'aide ailleurs")
+    choix = None
+    while choix not in [1, 2, 3]:
+        try:
+            choix = int(input())
+            if choix == 1:
+                forteresseCiadas()
+            elif choix == 2:
+                tuRebrrousses()
+            elif choix == 3:
+                magicien()
+        except ValueError:
+            print("Vous devez faire un choix")
+        pass
+    suite = input()
+
+####################################
+####################################
+####################################
+
+
+def Ciadas():
+    print("Vous: Voyons si on peut trouver une autre entrée...")
+    suite = input()
+    print("Vous faites le tour de la forteresse...")
+    suite = input()
+    print("...")
+    suite = input()
+    print("Vous trouvez une brèche dans la pierre...")
+    suite = input()
+    print("Peut-être qu'avec un objet assez lourd...")
+    if "masse" in inventaire:
+        print("Vous: Vous sortez votre masse et démolissez les briques une à une...")
+        suite = input()
+        print("Vous: Yes ! Une brèche ! Cette masse m'a été bien utile.")
+        suite = input()
+        print("Vous entrez dans la ville...")
+        suite = input()
+        EntreeCiadas()
+    suite = input()
+    print("Malheureusement vous 'navez rien de tel sur vous.")
+    suite = input()
+    print("Vous continuez de faire le tour de la forteresse,")
+    suite = input()
+    print("mais vous ne trouvez aucune faille.")
+    suite = input()
+    print("...")
+    suite = input()
+    print("Vous êtes revenu à l'entrée.")
+    suite = input()
+    print("Vous: Cette forteresse est décidemment bien solide...")
+    suite = input()
+    print("Que faire ?")
+    print("1. Aller chercher de l'aide ailleurs")
+    print("2. Rebrousser chemin")
+    choix = None
+    while choix not in [1, 2]:
+        try:
+            choix = int(input())
+            if choix == 1:
+                magicien()
+            elif choix == 2:
+                tuRebrrousses()
+        except ValueError:
+            print("Vous devez faire un choix")
+        pass
+    suite = input()
+
+####################################
+####################################
+####################################
+
+
+def magicien():
+    print("Vous continuez votre aventure.")
+    suite = input()
+    print("Vous: Peut-être qu'en trouvant ce vieux magicien...")
+    suite = input()
+    print("...")
+    suite = input()
+    print("Vous pas vous emmènent à une grande rivière.")
+    suite = input()
+    print("Un petit châlet se distingue au bord de l'eau.")
+    suite = input()
+    print("...")
+    suite = input()
+    print("Vous vous approchez.")
+    suite = input()
+    print("Un vieil homme pêche dans la rivière.")
+    suite = input()
+    print("Vous: Bonjour pêcheur ! Auriez-vous eu vent d'en vieux magicien,")
+    suite = input()
+    print("Vous: qui logerait dans la région ?")
+    suite = input()
+    print("Le vieil homme vous regarde, circonspect.")
+    suite = input()
+    print("Pêcheur: Il n'y a plus eu de magicien depuis bien longtemps dans ce pays...")
+    suite = input()
+    print("Pêcheur: ... Mais il y a bien un vieux fermier qui est adapte de sciences ésotériques plus loin...")
+    suite = input()
+    print("Allez vers le Sud et vous le trouverez")
+    suite = input()
+    print("...")
+    suite = input()
+    print("Vous remerciez le vieux pêcheur et reprenez votre route.")
+    suite = input()
+    print("...")
+    suite = input()
+    print("Vous arrivez rapidement à une vieille ferme.")
+    suite = input()
+    print("De la fumée sort de la cheminée.")
+    suite = input()
+    print("...")
+    suite = input()
+    print("Vous vous rapprochez et toquez à l'entrée.")
+    suite = input()
+    print("...")
+    suite = input()
+    print("Un homme vous ouvre,")
+    suite = input()
+    print("Il a une vieille barbe grisonnante de laquelle il s'échappe de la poudre.")
+    suite = input()
+    print("Fermier: Oui, jeune homme ? Que me vaut votre visite ?")
+    suite = input()
+    print("Vous lui racontez l'objet de votre quête.")
+    suite = input()
+    print("Fermier: Je vois... Je suis désolé pour vous, mais malheureusement, je ne suis pas votre homme.")
+    suite = input()
+    print("Vous êtes prêt à lui hurler 'Menteur' !")
+    suite = input()
+    print("Mais derrière lui, on entend soudain un grand BOUM ;")
+    suite = input()
+    print("Des bulles et des pailettes s'échappent bientôt de la cheminée, et retombent en flocons...")
+    suite = input()
+    print("Fermier: ...")
+    suite = input()
+    print("Vous: ...")
+    suite = input()
+    print("Magicien: Bon, j'accepte de vous aider,")
+    suite = input()
+    print("Magicien: Mais à une condition !")
+    suite = input()
+    print("Vous attendez, inquiet de savoir ce qu'un tel homme peut vouloir.")
+    suite = input()
+    print("Magicien: ... Battez-moi au pierre-feuille-ciseaux !")
+    suite = input()
+    print("Vous: ...")
+    suite = input()
+    print("Que faire ?")
+    print("1. Accepter le duel")
+    print("2. Vous fumez, vieil homme !")
+    suite = input()
+    choix = None
+    while choix not in [1, 2]:
+        try:
+            choix = int(input())
+            if choix == 1:
+                chifumi()
+            elif choix == 2:
+                suite = input()
+                print("Magicien: Bon... Je vais vous aider de toute façon, alors...")
+        except ValueError:
+            print("Vous devez faire un choix")
+        pass
+    suite = input()
+    print("Il vous ouvre la porte.")
+    suite = input()
+    print("Magicien: Mais refuser de jouer avec un vieil homme comme moi...")
+    suite = input()
+    print("Magicien: C'est vraiment ingrat.")
+    suite = input()
+    print("Vous entrez à l'intérieur de la ferme.")
+    suite = input()
+    print("De nombreux objets tous plus bizarres les uns que les autres jonchent le sol.")
+    suite = input()
+    print("Au fond, vous remarquez une grande table avec une boule de cristal posée en évidence en son milieu.")
+    suite = input()
+    print("Vous butez sur une pile de livre posée sur le tapis et tombez à terre.")
+    suite = input()
+    print("Vous entendez un feulement près de vous.")
+    suite = input()
+    print("Le temps de vous relevez, et vous voyez le magicien avec un chat noir dans le bras.")
+    suite = input()
+    print("Magicien: Ne faites pas attention, ce n'est que Sarouminet, mon fidèle compagnon.")
+    suite = input()
+    print("Magicien: Dit bonjour, mon minet.")
+    suite = input()
+    print("Le chat ne fait que vous feuler dessus.")
+    suite = input()
+    print("Magicien: ... Bon, venez avec moi.")
+    suite = input()
+    print("Vous le suivez jusqu'à la grande table.")
+    suite = input()
+    print("Il commence à faire d'obscurs mouvements en direction de la boule de cristal, qui se trouble peu à peu.")
+    suite = input()
+    print("Vous remarquez sur le côté de la table un livre : 'Mémoires de Gandilf le Gris'.")
+    suite = input()
+    print("Magicien: Hé ! Occupez-vous de la boule de cristal, plutôt. C'est là que se trouve votre réponse.")
+    suite = input()
+    print("Vous vous concentrez comme demandé sur la boule de cristal.")
+    suite = input()
+    print("Magicien: Je vois...")
+    suite = input()
+    print("Magicien: ...")
+    suite = input()
+    print("Magicien: Le roi...")
+    suite = input()
+    print("Magicien: A ses côtés... Un homme...")
+    suite = input()
+    print("Magicien:  Une longue cape...")
+    suite = input()
+    print("Vous: Oui ! C'est ça !")
+    suite = input()
+    print("Magicien: Chut ! Ne me coupez pas !")
+    suite = input()
+    print("Vous: ...")
+    suite = input()
+    print("Magicien: Il a... Un titre...")
+    suite = input()
+    print("Magicien: Le Pape !")
+    suite = input()
+    print("Vous: Le Pape ?")
+    suite = input()
+    print("Magicien: Oui ! Le Pape Françis ! C'est lui, votre homme !")
+    suite = input()
+    print("Vous: Mais... C'est incensé ! Pourquoi ferait-il cela à ma pauvre mère ?")
+    suite = input()
+    print("Vous: ... Je ne peux pas voir les pensées des gens, malheureusement... Cependant...")
+    suite = input()
+    print("Il se lève et se penche vers une malle. il en sort une drôle de bague.")
+    suite = input()
+    print("Magicien: Tenez. Ca pourra vous aider. C'est mon anneau magique.")
+    suite = input()
+    print("Magicien: Avec cela, vous passerez les portes de la ville sans aucun souci !")
+    suite = input()
+    print("Magicien: Trouvez cet homme, et apprenez la vérité !")
+    suite = input()
+    print("Vous: Euh, et bien... Merci... Je...")
+    suite = input()
+    print("Il vous met à la porte et vous crie 'bonne aventure'.")
+    suite = input()
+    print("...")
+    suite = input()
+    print("Vous: Et bien... Maintenant je sais où chercher...")
+    suite = input()
+    print("Il est grand temps de finir cette aventure...")
+    suite = input()
+    print("Que faire ?")
+    print("1. Se rendre à Ulululu")
+    print("2. Rebrousser chemin")
+    rebrousser = None
+    while rebrousser not in [1, 2]:
+        try:
+            rebrousser = int(input())
+        except ValueError:
+            print("Vous devez faire un choix")
+        pass
+    tuRebrrousses(rebrousser)
+
+    print("Vous retournez sur vos pas.")
+    suite = input()
+    print("Après une longue marche, vous arrivez enfin aux portes de la ville")
+    suite = input()
+    print("Vous mettez l'anneau donné par le magicien.")
+    suite = input()
+    print("Vous vous approchez de l'entrée...")
+    suite = input()
+    print("Les gardes s'endorment sur place...")
+    suite = input()
+    print("Vous: Messieurs...")
+    suite = input()
+    print("Ils se réveillent brutalement, et écarquillent les yeux en vous voyant.")
+    suite = input()
+    print("Garde 1: Oh, monseigneur !")
+    suite = input()
+    print("Garde 2: Votre éminence...")
+    suite = input()
+    print("Vous: Je viens pour la cérémonie...")
+    suite = input()
+    print("Garde 2: Bien évidemment !")
+    suite = input()
+    print("Garde 1: Entrez donc !")
+    suite = input()
+    print("Vous passez les portes de la ville.")
+    suite = input()
+    print("Après avoir tourné dans une ruelle, vous enlevez l'anneau, pour rester incognito.")
+    suite = input()
+    print("Vous: Ce vieux fou n'était donc pas si fou que cela...")
+    suite = input()
+
+    final()
+
+####################################
+####################################
+####################################
+
+
+def chifumi():
+    print("Magicien: Je ne m'attendais pas à ce que vous acceptiez... Mais soit !")
+    suite = input()
+    print("Magicien: Battons-nous !")
+    suite = input()
+    print("Magicien: Nous jouerons cette victoire en trois points gagnants !")
+    suite = input()
+
+    manche = 1
+
+    pointsOrdi = 0
+    pointsJoueur = 0
+
+    while pointsOrdi < 3 and pointsJoueur < 3:
+        print("Manche: ", manche)
+        print("Choisissez votre coup:")
+        print("1: Pierre")
+        print("2: Feuille")
+        print("3: Ciseau")
+
+        choixCoupJoueur = None
+
+        while choixCoupJoueur not in [1, 2, 3]:
+            try:
+                choixCoupJoueur = int(input("Entrez votre choix: "))
+                if choixCoupJoueur == 1:
+                    print("Vous choisissez pierre.")
+                    suite = input()
+                elif choixCoupJoueur == 2:
+                    print("Vous choisissez feuille.")
+                    suite = input()
+                elif choixCoupJoueur == 3:
+                    print("Vous choisissez ciseaux.")
+                    suite = input()
+            except ValueError:
+                print("Vous devez entrer un chiffre entre 1 et 3.")
+
+        choixCoupOrdi = randint(1, 3)
+        if choixCoupOrdi == 1:
+            print("L'ordinateur joue pierre.")
+            suite = input()
+        elif choixCoupOrdi == 2:
+            print("L'ordinateur joue feuille.")
+            suite = input()
+        else:
+            print("L'ordinateur joue ciseau.")
+            suite = input()
+
+        if choixCoupOrdi == choixCoupJoueur:
+            print("Egalité !")
+            suite = input()
+            print("Personne ne gagne.")
+            suite = input()
+
+        elif choixCoupOrdi == 1 and choixCoupJoueur == 2:
+            print("Vous avez gagné cette manche.")
+            suite = input()
+            pointsJoueur += 1
+            print("Vous avez", pointsJoueur, "point(s).")
+            suite = input()
+
+        elif choixCoupOrdi == 2 and choixCoupJoueur == 3:
+            print("Vous avez gagné cette manche.")
+            pointsJoueur += 1
+            print("Vous avez", pointsJoueur, "point(s).")
+            suite = input()
+
+        elif choixCoupOrdi == 3 and choixCoupJoueur == 1:
+            print("Vous avez gagné cette manche.")
+            pointsJoueur += 1
+            print("Vous avez", pointsJoueur, "points.")
+            suite = input()
+
+        else:
+            print("Vous avez perdu cette manche.")
+            suite = input()
+            pointsOrdi += 1
+            print("L'ordinateur a", pointsOrdi, "points.")
+            suite = input()
+
+        manche += 1
+
+    if pointsOrdi > pointsJoueur:
+        print("Le magicien a gagné la partie.")
+        suite = input()
+        print("Magicien: Oh, oh ! Je ne suis donc pas si rouillé que ça !")
+        suite = input()
+    else:
+        print("Vous avez gagné la partie.")
+        suite = input()
+        print("Magicien: C'est bien dommage... Nous aurons notre revanche !")
+        suite = input()
+
+####################################
+####################################
+####################################
+
+
+def salleDuTrone():
+    print("Vous voici enfin arrivé à l'intérieur du château.")
+    suite = input()
+    print("La salle du trône est comble.")
+    suite = input()
+    print("Vous vous faufilez à travers les nobles et les servants,")
+    suite = input()
+    print("de sorte à avoir une vue d'ensemble de la salle.")
+    suite = input()
+    print("Vous: Mais où peut donc bien être ce Pape ?")
+    suite = input()
+    print("... ?")
+    suite = input()
+    print("...")
+    suite = input()
+    print("La cérémonie commence...")
+    suite = input()
+    print("Le roi de Tambarin arrive sur son trône.")
+    suite = input()
+    print("Un homme lit un long papier, ")
+    suite = input()
+    print("Il explique la présence des convives en ce jour.")
+    suite = input()
+    print("Le roi serait apparemment en recherche d'une prétendante...")
+    suite = input()
+    print("C'est donc pour cela qu'il a fait convier la majorité des seigneurs des pays voisins...")
+    suite = input()
+    print("Mais vous n'avez pas le temps pour cela.")
+    suite = input()
+    print(
+        "Vous avez remarqué le Pape, caché dans un coin derrière le trône du seigneur.")
+    suite = input()
+    print("...")
+    suite = input()
+    print("Il s'éclipse.")
+    suite = input()
+    print("Vous vous frayez un chemin à travers l'assemblée, suivant le Pape.")
+    suite = input()
+    print("A pas de loup, vous le chassez à travers les couloirs du château.")
+    suite = input()
+    print("Il s'arrête au milieu d'une pièce, ")
+    suite = input()
+    print("Tire un flambeau, ")
+    suite = input()
+    print("... Et la grande bibliothèque se déplace.")
+    suite = input()
+    print("...")
+    suite = input()
+    print("Il s'engouffre dans le passage secret.")
+    suite = input()
+    print("Vous le suivez.")
+    suite = input()
+    print("Vous arrivez tous les deux dans une grande pièce sombre.")
+    suite = input()
+    print("Il se retourne.")
+    suite = input()
+    print("Pape: Qui êtes vous ?!")
+    suite = input()
+    print(
+        "Vous: Je suis [nom à insérer], fils de Lasung, la gérante du...")
+    suite = input()
+    print("Pape: Oui, oui... Je vois... Et que me vaut votre visite ?")
+    suite = input()
+    print("Vous: Vous l'avez tuée !!!")
+    suite = input()
+    print("Pape: Vous ne comprenez pas...")
+    suite = input()
+    print("Pape: Elle le voulait.")
+    suite = input()
+    print("Pape: C'était pour la bonne cause...")
+    suite = input()
+    print("Pape: La prophétie va enfin se réaliser.")
+    suite = input()
+    print("Vous: De quoi parlez-vous ?! Ma mère n'aurait jamais voulu mourir de la sorte !")
+    suite = input()
+    print("Vous lui foncez dessus.")
+    FightFinal()
+
+####################################
+####################################
+####################################
+
+def fightFinal(vieTotale, forceMin, forceMax):
+  vieRestante = vieTotale
+  monsterLife = 150
+
+  print("Le Pape dégaine son sceptre et riposte.")
+  suite = input()
+  print("\n", "-" * 50, "\n")
+  suite = input()
+
+  while vieRestante >= 0 or monsterLife > 0:
+    yourAttack = randint(forceMin, forceMax)
+    monsterAttack = randint(5, 15)
+
+    print("Vous avez", vieRestante, "points de vie")
+    suite = input()
+    print("Le Pape a", monsterLife, "points de vie.")
+    suite = input()
+
+    if VieRestante > 0:
+      print("Vous frappez le Pape et lui enlevez",yourAttack, "points de vie.")
+      monsterLife = monsterLife - yourAttack
+      suite = input()
+
+    if monsterLife <= 0:
+      print("\n", "-" * 50, "\n")
+      print("Le Pape tombe à terre, exténué.")
+      suite = input()
+      print("Pape: Vous m'avez eu...")
+      print("\n", "-" * 50, "\n")
+      suite = input()
+      return vieRestante
+    elif vieRestante <= 0:
+      print("Vous tombez à terre, exténué !")
+      suite = input()
+      print("Le Pape vous jette par dessus une fenêtre.")
+      suite = input()
+      print("Vous êtes ramené à l'entrée de la ville.")
+      EntreeCiadas()
+      return vieRestante
+    else:
+      print("Le Pape vous attaque et vous enlève",monsterAttack, "points de vie.")
+      vieRestante = vieRestante - monsterAttack
+      suite = input()
+
+####################################
+####################################
+####################################
+
+def entreeChateau(inventaire, argent):
+  #######################
+  #    Entree chateau   #
+  #######################
+  print("Maintenant que vous êtes dans la ville, il vous faut réussir à accéder au château.")
+  suite = input()
+  print("Vous remontez les rues de la ville jusqu'à arriver aux portes du château.")
+  suite = input()
+  print("Des gardes sont postés à l'entrée.")
+  suite = input()
+  if "anneau" in inventaire:
+    print("Vous: Il serait plus judicieux de remettre l'anneau pour réussir à passer...")
+    suite = input()
+    print("Vous remettez l'anneau à votre doigt, et avancez jusqu'aux portes.")
+    suite = input()
+    print("les gardes vous laissent passer.")
+    suite = input()
+    salleDuTrone()
+  else:
+    print("Vous vous avancez, mais la route vous est bien vite barrée.")
+    suite = input()
+    print("Garde 1: Halte-là mon brave. Seuls les nobles peuvent accéder à la salle du trône.")
+    suite = input()
+    print("Garde 2: Nous devons assurer la bonne tenue du sacre...")
+    suite = input()
+    print("...")
+    suite = input()
+    print("Vous allez devoir trouver un autre moyen pour passer l'entrée du château...")
+    suite = input()
+    centrevilleCiadas()
+
+#######################
+#     Centre-ville    #
+#######################  
+def centrevilleCiadas():
+  print("Vous redescendez vers le centre-ville.")
+  suite = input()
+  print("Vous: Il y aura bien quelque chose qui pourra me servir...")
+  suite = input()
+  print("...")
+  suite = input()
+  print("Vous vous baladez au hasard dans la ville.")
+  suite = input()
+  print("...")
+  suite = input()
+
+  #######################
+  #        Tissus       #
+  #######################
+  print("Vous arrivez rapidement devant un marchand de tissus")
+  suite = input()
+  print("1. Rebrousser chemin")
+  print("2. Y entrer")
+  print("3. Continuer sa route")
+  choix = None
+  while choix not in [1, 2, 3]:
+    try:
+      choix = int(input())
+      if choix == 1:
+        tuRebrrousses()
+      elif choix == 2:
+        print("Vous entrez dans le commerce.")
+        suite = input()
+        print("Vous saluez le marchand.")
+        suite = input()
+        print("Vous remarquez une belle étoffe en velours.")
+        suite = input()
+        print("Cela pourrait vous être utile...")
+        suite = input()
+        print("Voulez vous acheter cette étoffe ?")
+        acheter = None
+        while acheter not in [1, 2]:
+          try:
+            print("1. Acheter l'étoffe pour 100 pièces")
+            print("2. Ne pas acheter")
+            print("")
+            acheter = int(input("Acheter cet objet pour 100 pièces ?"))
+            if acheter == 1:
+              if argent >= 100:
+                print("Vous avez acheté l'étoffe au marchand")
+                inventaire.append("cape")
+                argent = argent - 100
+                suite = input()
+              else:
+                print("")
+                print("Vous n'avez pas assez pour acheter cette étoffe.")
+            elif acheter == 2:
+              print("Vous: On va chercher autre chose...")
+              suite = input()
+          except ValueError:
+            print("Vous devez faire un choix")
+          pass
+      elif choix == 3:
+        print("Vous: On va chercher autre chose...")
+        suite = input()
+    except ValueError:
+      print("Vous devez faire un choix")
+    pass
+  print("...")
+  suite = input()
+
+  #######################
+  #        Forge        #
+  #######################
+  print("Vous continuez votre balade et arrivez devant une forge.")
+  suite = input()
+  print("1. Rebrousser chemin")
+  print("2. Y entrer")
+  print("3. Continuer sa route")
+  choix = None
+  while choix not in [1, 2, 3]:
+    try:
+      choix = int(input())
+      if choix == 1:
+        tuRebrrousses()
+      elif choix == 2:
+        print("Vous entrez dans le commerce.")
+        suite = input()
+        print("Vous entendez le tintement du métal frappé par le forgeron.")
+        suite = input()
+        print("Vous remarquez une grande épée dont le fourreau en cuir est orné de pierres.")
+        suite = input()
+        print("Cela pourrait vous être utile...")
+        suite = input()
+        print("Voulez vous acheter cette épée ?")
+        acheter = None
+        while acheter not in [1, 2]:
+          try:
+            print("1. Acheter l'épée pour 150 pièces")
+            print("2. Ne pas acheter")
+            print("")
+            acheter = int(input("Acheter cet objet pour 150 pièces ?"))
+            if acheter == 1:
+              if argent >= 150:
+                print("Vous avez acheté l'épée au forgeron")
+                inventaire.append("epee")
+                argent = argent - 150
+                suite = input()
+              else:
+                print("")
+                print("Vous n'avez pas assez pour acheter cette épée.")
+            elif acheter == 2:
+              print("Vous: On va chercher autre chose...")
+              suite = input()
+          except ValueError:
+            print("Vous devez faire un choix")
+          pass
+      elif choix == 3:
+        print("Vous: On va chercher autre chose...")
+        suite = input()
+    except ValueError:
+      print("Vous devez faire un choix")
+    pass
+  print("...")
+  suite = input()
+
+  #######################
+  #        Eglise       #
+  #######################
+  print("Vous continuez votre balade et arrivez devant une église.")
+  suite = input()
+  print("1. Rebrousser chemin")
+  print("2. Y entrer")
+  print("3. Continuer sa route")
+  choix = None
+  while choix not in [1, 2, 3]:
+    try:
+      choix = int(input())
+      if choix == 1:
+        tuRebrrousses()
+      elif choix == 2:
+        print("Vous entrez dans l'Eglise.")
+        suite = input()
+        print("...")
+        suite = input()
+        print("Vous priez pour votre mère.")
+        suite = input()
+        print("En sortant, vous remarquez une annonce : ")
+        suite = input()
+        print("'Nos moines copistes rédigeront toute lettre pour la modique somme de 50 pièces !'")
+        suite = input()
+        print("C'est cher... Mais vous pourriez obtenir votre entrée pour le château...")
+        suite = input()
+        print("Même si pour cela vous devez donner 50 pièces au tueur de votre mère...")
+        acheter = None
+        while acheter not in [1, 2]:
+          try:
+            print("1. Se faire rédiger une invitation par un moine copiste")
+            print("2. Ne pas se faire rédiger l'invitation")
+            print("")
+            acheter = int(input("Acheter l'invitation pour 50 pièces ?"))
+            if acheter == 1:
+              if argent >= 50:
+                print("Le moine a rédigé votre invitation")
+                inventaire.append("invitation")
+                argent = argent - 50
+                suite = input()
+              else:
+                print("")
+                print("Vous n'avez pas assez pour acheter cette invitation.")
+            elif acheter == 2:
+              print("Vous: On va chercher autre chose...")
+              suite = input()
+          except ValueError:
+            print("Vous devez faire un choix")
+          pass
+      elif choix == 3:
+        print("Vous: On va chercher autre chose...")
+        suite = input()
+    except ValueError:
+      print("Vous devez faire un choix")
+    pass
+    print("...")
+    suite = input()
+
+    #######################
+    #       Taverne       #
+    #######################
+    print("Vous vous retrouvez devant la taverne.")
+    suite = input()
+    print("1. Rebrousser chemin")
+    print("2. Se rendre à l'entrée du château")
+    print("3. Entrer dans la taverne")
+    choix = None
+    while choix not in [1, 2, 3]:
+      try:
+        choix = int(input())
+        if choix == 1:
+          tuRebrrousses()
+        elif choix == 2:
+          retourChateauCiadas()
+        elif choix == 3:
+          taverneCiadas()
+      except ValueError:
+        print("Vous devez faire un choix")
+      pass
+
+####################################
+####################################
+####################################
+
+def taverneCiadas():
+  print("Vous entrez dans la taverne.")
+  suite = input()
+  print("Les gens y parlent fort et l'alcool coule à flot")
+  suite = input()
+  print("Vous achetez une bière pour 10 pièces.")
+  argent = argent - 10
+  suite = input()
+  print("...")
+  suite = input()
+  print("Après être bien alcoolisé, vous vous bagarrez avec deux individus et finissez jeté dehors.")
+  suite = input()
+  print("les gardes ont été appelés et vous finissez au cachot.")
+  #######################
+  #        Cachot       #
+  #######################
+  suite = input()
+  print("...")
+  suite = input()
+  print("Vous vous réveillez lentement de votre transe.")
+  suite = input()
+  print("Vous avez très mal au crâne...")
+  suite = input()
+  print("Vous entendez un bruit bizarre de l'autre côté de la pièce...")
+  suite = input()
+  print("Un vieil homme bizarre est assis là, une patate à la main.")
+  suite = input()
+  print("1. S'évader")
+  print("2. Lui parler")
+  choix = None
+  while choix not in [1, 2]:
+      try:
+        choix = int(input())
+        if choix == 1:
+          if "couteau-suisse" in inventaire:
+            print("Vous crochetez la serrure.")
+            suite = input()
+            print("...")
+            suite = input()
+            print("Vous voilà hors de la cellule !")
+            suite = input()
+            print("Il est enfin temps pour vous de vous rendre à cette cérémonie...")
+            suite = input()
+            salleDuTrone()
+          else:
+            print("Vous essayez de crocheter la serrure... En vain.")
+            suite = input()
+            print("...")
+            suite = input()
+            print("Vous feriez mieux de parler au vieil homme plutôt que de rester là...")
+            suite = input()
+        print("Vous vous approchez du vieil homme...")
+        suite = input()
+        print("Homme à la patate: Schneubeugleu !?")
+        suite = input()
+        print("Vous: ?!")
+        suite = input()
+        print("Vous ne comprenez rien à son charabia.")
+        suite = input()
+        print("Homme à la patate: “coudoussère, Holretemps, frappincechame drepintalisse !!!")
+        suite = input()
+        print("Soudain, il vous frappe à la tête avec sa patate, qui est aussi dure que la pierre...")
+        suite = input()
+        print("Vous ne comprenez rien à son charabia.")
+        suite = input()
+        
+      except ValueError:
+        print("Vous devez faire un choix")
+      pass
+
+
+def retourChateauCiadas():
+          print("Vous retournez à l'entrée du château")
+          suite = input()
+          if "cape" or "epee" or "invitation" in inventaire:
+            print("Vos précieux achats vous permettront peut-être d'accéder à la salle du trône...")
+            suite = input()
+            print("...")
+            suite = input()
+            print("Avec vos précieuses acquisitions, vous réussissez à passer sans peine devant les gardes !")
+            salleDuTrone()
+          else:
+            print("...")
+            suite = input()
+            print("Malheureusement les gardes ne vous laissent toujours pas passer...")
+            suite = input()
+            print("Que faire ?")
+            print("1. Chercher de l'aide ailleurs")
+            print("2. Se rendre à la taverne")
+            print("3. Rebrousser chemin")
+            choix = None
+            while choix not in [1, 2, 3]:
+              try:
+                choix = int(input())
+                if choix == 1:
+                  magicien()
+                elif choix == 2:
+                  taverneCiadas()
+                elif choix == 3:
+                  tuRebrrousses()
+              except ValueError:
+                print("Vous devez faire un choix")
+            pass
 
 #Début de l'aventure
 #Run the game different parts of the game
