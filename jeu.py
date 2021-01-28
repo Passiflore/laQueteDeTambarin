@@ -165,7 +165,7 @@ def choixDirection(direction):
       print("1.Entrez")
       print("2.Rebroussez chemin")
       revenir  = None
-      while revenir not in [1, 2, 3]:
+      while revenir not in [1, 2]:
         try:
           revenir = int(input())
         except ValueError:
@@ -183,11 +183,11 @@ def choixDirection(direction):
         print("Allez à l’Ouest ! Au magasin Général ! Et ne revenez plus ici !")
         suite = input()
       elif revenir == 2:
-        print("Vous rebroussez chemin et revenez à votre point de départ.")
-    print("Quel chemin prendre ?")
-    print("1.Aller à gauche")
-    print("2.Aller en face")
-    print("3.Aller à droite")
+          print("Vous rebroussez chemin et revenez à votre point de départ.")
+      print("Quel chemin prendre ?")
+      print("1.Aller à gauche")
+      print("2.Aller en face")
+      print("3.Aller à droite")
     direction = None
     while direction not in [1, 2, 3]:
       try:
@@ -607,6 +607,8 @@ def magasin(inventaire, argent, arme, monBrave, nom, vieTotale, lieuvisite):
         print("Vous devez faire un choix")
         pass
     argent, arme, vieTotale = acheter (choixMagasin,inventaire, argent, arme, monBrave, nom, vieTotale)
+
+  choixDirection2(inventaire, argent, arme, monBrave, nom, vieTotale)
 
 def acheter(choixMagasin,inventaire, argent, arme, monBrave, nom, vieTotale):
   if choixMagasin == 1 and argent >= 150:
@@ -1032,7 +1034,6 @@ def moulin(inventaire, argent, arme, monBrave, nom, vieTotale):
   print("Vous continuez votre aventure, et traversant à travers un pré recouvert de fleurs,vous tombez sur un champ de blé au fond duquel se trouve un moulin.")
   suite = input()
   print("Vous traversez le champ de blé, en y arrachant un épi au passage")
-  vieTotale, argent = fightLevel1(vieTotale, forceMin, forceMax, argent)
   print("Vous arrivez au moulin")
   suite = input()
   print("Vous...")
@@ -1189,6 +1190,7 @@ def pont(inventaire, argent, arme, monBrave, nom, vieTotale):
    pass
  
  enigme(devinette,inventaire, argent, arme, monBrave, nom, vieTotale)
+ return inventaire, argent, arme, monBrave, nom, vieTotale,lieuvisite
  
 def enigme (devinette,inventaire, argent, arme, monBrave, nom, vieTotale):
  if devinette == 1:
@@ -1209,7 +1211,8 @@ def enigme (devinette,inventaire, argent, arme, monBrave, nom, vieTotale):
      except ValueError:
        print("Vous devez faire un choix")
      pass
-   enigme(devinette)
+   enigme(devinette,inventaire, argent, arme, monBrave, nom, vieTotale)
+   return inventaire, argent, arme, monBrave, nom, vieTotale,lieuvisite
  
  elif devinette == 2:
    print("Vous: Je relève le défi, je vais répondre à votre enigme... ")
@@ -1234,28 +1237,27 @@ def enigme (devinette,inventaire, argent, arme, monBrave, nom, vieTotale):
    tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite )
 
 def continuer(inventaire, argent, arme, monBrave, nom, vieTotale):
- suite = input()
- if "pain" in inventaire:
-   print("Vous: Merci ! Mais attendez, je me suis embarqué dans une aventure, et j’ai rencontré votre ami le vieux meunier.")
-   suite = input()
-   print("Vous: Il m’a dit que vous m’aideriez… Avez-vous vu passer des personnes louches récemment ?")
-   suite = input()
-   print("Homme étrange: Des personnes louches… Peut être bien. J’ai récemment vu passer une troupe de troubadours… ")
-   suite = input()
-   print("Homme étrange: Ceux-là sont très bizarres… Mais j’ai aussi vu passer un grand homme, très mystérieux, qui avait une longue cape noire et un chapeau pointu.")
-   suite = input()
-   print("Homme étrange: Il s’en est allé très rapidement après avoir voulu me donner de l’argent car il ne trouvait pas la réponse à mon énigme.")
-   suite = input()
-   print("Vous: Je vois… Merci de votre aide !")
-   suite = input()
-   print("Vous continuez votre chemin")
-   suite = input()
- elif "pain" not in inventaire:
-   print("Vous: Merci beaucoup !")
-   suite = input()
-
- lieuvisite.append("pont")
- return inventaire, argent, arme, monBrave, nom, vieTotale,lieuvisite
+  suite = input()
+  if "pain" in inventaire:
+    print("Vous: Merci ! Mais attendez, je me suis embarqué dans une aventure, et j’ai rencontré votre ami le vieux meunier.")
+    suite = input()
+    print("Vous: Il m’a dit que vous m’aideriez… Avez-vous vu passer des personnes louches récemment ?")
+    suite = input()
+    print("Homme étrange: Des personnes louches… Peut être bien. J’ai récemment vu passer une troupe de troubadours… ")
+    suite = input()
+    print("Homme étrange: Ceux-là sont très bizarres… Mais j’ai aussi vu passer un grand homme, très mystérieux, qui avait une longue cape noire et un chapeau pointu.")
+    suite = input()
+    print("Homme étrange: Il s’en est allé très rapidement après avoir voulu me donner de l’argent car il ne trouvait pas la réponse à mon énigme.")
+    suite = input()
+    print("Vous: Je vois… Merci de votre aide !")
+    suite = input()
+    print("Vous continuez votre chemin")
+    suite = input()
+  elif "pain" not in inventaire:
+    print("Vous: Merci beaucoup !")
+    suite = input()
+  lieuvisite.append("pont")
+  return inventaire, argent, arme, monBrave, nom, vieTotale,lieuvisite
 
 #3e partie du jeu
 def EntreeCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax):
@@ -2172,8 +2174,7 @@ def Aventure(inventaire, argent, arme, monBrave, nom, vieTotale):
   villageAbandonne(inventaire, argent, arme, monBrave, nom, vieTotale)
   moulin(inventaire, argent, arme, monBrave, nom, vieTotale)
   pont(inventaire, argent, arme, monBrave, nom, vieTotale)
-  while "pont" not in lieuvisite:
-    magasin(inventaire, argent, arme, monBrave, nom, vieTotale, lieuvisite)
+  magasin(inventaire, argent, arme, monBrave, nom, vieTotale, lieuvisite)
   print("fin")
   
   
