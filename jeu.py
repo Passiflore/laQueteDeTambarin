@@ -3,11 +3,12 @@ charisme = 10
 force = 20
 argent = 100
 inventaire =[]
+avancement =[]
 lieuvisite =[]
 
 #Global imports
 from random import *
-# import secrets
+import secrets
 
 #Slow reading system
 import sys, time
@@ -68,7 +69,13 @@ def TutoChoix1(choix1):
    print('3.La fenêtre')
    print('4.L’armoire')
    print('5.La porte')
-   choix1 = int(input())
+   choix1 = None
+   while choix1 not in [1, 2, 3, 4, 5]:
+    try:
+      choix1 = int(input())
+    except ValueError:
+      print("Vous devez faire un choix")
+      pass
 
 def sortir(peur):
   if peur == 2: 
@@ -76,13 +83,11 @@ def sortir(peur):
 
 def nomSexe(nom,sexe):
   monBrave = "mon brave"
-  # if nom == "Triceratops":
-  #   vie = vie + 10
-  #   print("Votre vie est de",vie)
-  # if nom == "Boubou":
-  #   print("Bonus de crâne chauve")
-  #   charisme = charisme + 20
-  #   print("Votre charisme est de", charisme)
+  if nom == "Triceratops":
+    vie = vie + 10
+    print("Votre vie est de",vie)
+  if nom =="Boubou":
+    print("Bonus de crâne chauve")
   if sexe == 1:
     monBrave = "jeune fille"
     print("Moi, je suis",nom,"la fille de la gérante de ce bar. Je l’aide en cuisine. Bienvenue à vous dans notre beau village !")
@@ -106,6 +111,8 @@ def nomSexe(nom,sexe):
 
 def choixDeVie(cVie):
   if cVie == 2: 
+    print("Si vous choisisez cette option voici ce qui va se passer...")
+    suite = input()
     print('Vous continuez votre vie, et l’auberge continue de bien marcher.')
     suite = input()
     print('L’auberge devient connue de tout le royaume grâce à votre histoire, narrée dans les journaux')
@@ -116,7 +123,7 @@ def choixDeVie(cVie):
     suite = input()
     print('Vous êtes rongé de regrets et vous ne finirez jamais heureux.')
     suite = input()
-    return GameOver
+    print('Non ça ne peux pas se finir comme ça. Pensez à votre mère car même quand tout le monde est contre toi, elle restait ta mailleure amie')
 
 def choixObjetDepart(objetDepart):
   if objetDepart == 1:
@@ -203,6 +210,7 @@ def choixArme(armement, argent):
     arme = "bâton"
     return argent-25 , arme
   elif armement == 4 and argent >= 20:
+    arme = "marteau"
     return argent-20, arme
   else:
     print("Vous n'avez pas assez d'argent pour cela, refaites un choix:")
@@ -517,20 +525,172 @@ def fightLevel1(vieTotale):
     suite = input()
 
 # 2eme partie du jeu
-def magasin(inventaire, argent, arme, monBrave, nom, vieTotale):
+def magasin(inventaire, argent, arme, monBrave, nom, vieTotale, avancement):
   print("Vous retournez au magasin général")
+  suite = input()
   print("Ah, te revoilà", nom, "y a t-il eu de l'avancement dans ta quête ?")
+  suite = input()
+  print("Je viens de recevoir un nouvel arrivage! Approche viens jetter un oeil")
+  suite = input()
+  print("Vous disposez de ",argent,"pièces")
+  print("Vous choisissez:")
+  print("1.Un arc/arbalète (150 pièces)")
+  print("2.Une hache (100 pièces)")
+  print("3.Un bâton (25 pièces)")
+  print("4.Un marteau (20 pièces)")
+  print("5.Une pomme (5 pièces)")
+  print("6.Une baguette de pain frais (10 pièces)")
+  print("7.Une tomme de fromage de chèvre (15 pièces)")
+  print("8.Des baies sauvages")
+  print("9.Ne rien acheter")
 
-def tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale):
+  if avancement > 1 :
+    print("10.Une arbalète 100 pièces")
+  if avancement > 2:
+    print("11.Une épée 125 pièces")
+  if avancement > 3 :
+    print("12.Une lance 130 pièces")
+  if avancement > 4 :
+    print("13.Une masse 165 pièces")
+
+  choixMagasin  = None
+  while choixMagasin not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]:
+    try:
+      choixMagasin = int(input())
+    except ValueError:
+      print("Vous devez faire un choix")
+      pass
+  argent, arme, vieTotale = acheter (choixMagasin,inventaire, argent, arme, monBrave, nom, vieTotale)
+  
+  print("Vous disposez de ",argent,"pièces")
+  print("Voulez vous acheter autre chose ?")
+  print("1.Oui")
+  print("2.Non")
+  acheterAutreChose = None
+  while acheterAutreChose not in [1, 2]:
+    try:
+      acheterAutreChose = int(input())
+    except ValueError:
+      print("Vous devez faire un choix")
+      pass
+  if acheterAutreChose == 1:
+    print("Vous disposez de ",argent,"pièces")
+    print("Vous choisissez:")
+    print("1.Un arc/arbalète (150 pièces)")
+    print("2.Une hache (100 pièces)")
+    print("3.Un bâton (25 pièces)")
+    print("4.Un marteau (20 pièces)")
+    print("5.Une pomme (5 pièces)")
+    print("6.Une baguette de pain frais (10 pièces)")
+    print("7.Une tomme de fromage de chèvre (15 pièces)")
+    print("8.Des baies sauvages")
+    print("9.Ne rien acheter")
+    if avancement > 1 :
+      print("10.Une arbalète 100 pièces")
+    if avancement > 2:
+      print("11.Une épée 125 pièces")
+    if avancement > 3 :
+      print("12.Une lance 130 pièces")
+    if avancement > 4 :
+      print("13.Une masse 165 pièces")
+
+    choixMagasin  = None
+    while choixMagasin not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]:
+      try:
+        choixMagasin = int(input())
+      except ValueError:
+        print("Vous devez faire un choix")
+        pass
+    argent, arme, vieTotale = acheter (choixMagasin,inventaire, argent, arme, monBrave, nom, vieTotale)
+
+def acheter(choixMagasin,inventaire, argent, arme, monBrave, nom, vieTotale):
+  if choixMagasin == 1 and argent >= 150:
+    arme = "arc"
+    return argent-150, arme, vieTotale
+  elif choixMagasin == 2 and argent >= 100:
+    arme = "hache"
+    print(argent)
+    return  argent-100, arme, vieTotale
+    print("Vous a choisissez")
+  elif choixMagasin == 3 and argent >= 25:
+    arme = "bâton"
+    return argent-25 , arme, vieTotale
+  elif choixMagasin == 4 and argent >= 20:
+    arme = "marteau"
+    return argent-20, arme, vieTotale
+  elif choixMagasin == 5 and argent >= 5:
+    print("Vous manger la pomme et gagnez 5 point de vie")
+    return argent-5, arme, vieTotale+5
+  elif choixMagasin == 6 and argent >= 10:
+    print("Vous manger le pain et gagnez 10 point de vie")
+    return argent-10, vieTotale+10, arme
+  elif choixMagasin == 7 and argent >= 15:
+    print("Vous manger le fromage et gagnez 15 point de vie")
+    return argent-15, vieTotale+15, arme
+  elif choixMagasin == 8 and argent >= 10:
+    print("Vous manger quelques baies et gagnez 5 point de vie")
+    return argent-10, vieTotale+10, arme
+  elif choixMagasin == 9:
+    print("Vous continuez votre aventure")
+    choixDirection2(inventaire, argent, arme, monBrave, nom, vieTotale)
+  elif choixMagasin == 10 and argent >= 100:
+    arme = "arbalète"
+    return argent-100, vieTotale, arme
+  elif choixMagasin == 11 and argent >= 125:
+    arme = "epee"
+    return argent-125, vieTotale, arme
+  elif choixMagasin == 12 and argent >= 130:
+    arme = "lance"
+    return argent-130, vieTotale, arme
+  elif choixMagasin == 13 and argent >= 165:
+    arme = "masse"
+    return argent-165, vieTotale, arme
+  else:
+    print("Vous n'avez pas assez d'argent pour cela, refaites un choix:")
+    print("Vous disposez de ",argent,"pièces")
+    print("Vous choisissez:")
+    print("1.Un arc/arbalète (150 pièces)")
+    print("2.Une hache (100 pièces)")
+    print("3.Un bâton (25 pièces)")
+    print("4.Un marteau (20 pièces)")
+    print("5.Une pomme (5 pièces)")
+    print("6.Une baguette de pain frais (10 pièces)")
+    print("7.Une tomme de fromage de chèvre (15 pièces)")
+    print("8.Des baies sauvages")
+    print("9.Ne rien acheter")
+    if avancement > 1 :
+      print("10.Une arbalète 100 pièces")
+    if avancement > 2:
+      print("11.Une épée 125 pièces")
+    if avancement > 3 :
+      print("12.Une lance 130 pièces")
+    if avancement > 4 :
+      print("13.Une masse 165 pièces")
+    choixMagasin  = None
+    while choixMagasin not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]:
+      try:
+        choixMagasin = int(input())
+      except ValueError:
+        print("Vous devez faire un choix")
+      pass
+    argent, arme, vieTotale = acheter (choixMagasin,inventaire, argent, arme, monBrave, nom, vieTotale)
+
+def choixDirection2(inventaire, argent, arme, monBrave, nom, vieTotale):
+  print("yo")
+
+
+def tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, avancement):
   if rebrousser == 2:
     print_slow("Vous : Les forêts ça fait toujours peur, c'est inquiétant, il serait plus judicieux de rebrousser chemin...")
     suite = input()
-    magasin (inventaire, argent, arme, monBrave, nom)
-    foret (inventaire, argent, arme, monBrave, nom, vieTotale)
+    magasin (inventaire, argent, arme, monBrave, nom, vieTotale, avancement)
 
-def foret(inventaire, argent, arme, monBrave, nom, vieTotale):
+def foret(inventaire, argent, arme, monBrave, nom, vieTotale, avancement):
+  lieuvisite.append("foret")
+  avancement = 0
 
   #niv 1
+  avancement = 1
   print("Vous commencez votre aventure et suivez votre prodigieux sens de l’orientation,")
   suite = input()
   print("vous dirigeant jusqu’à une grande forêt.")
@@ -545,11 +705,12 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale)
+  tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, avancement )
 
   vieTotale = fightLevel1(vieTotale)
 
   #niv2
+  avancement = 2
   suite = input()
   print("Cette forêt est sombre et pleine de mystères…")
   suite = input()
@@ -565,11 +726,12 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale)
+  tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, avancement)
 
   vieTotale = fightLevel1(vieTotale)
   
   #niv3
+  avancement = 3
   suite = input()
   print("Vous trouvez un bâton couvert de mousse")
   suite = input()
@@ -590,11 +752,12 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale)
+  tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, avancement)
 
   vieTotale = fightLevel1(vieTotale)
 
   #niv4
+  avancement = 4
   suite = input()
   print("Vous arrivez à l’orée d’une clairière, qui possède un magnifique lac. Dans l’eau, une femme profite de la chaleur du soleil sur son corps.")
   suite = input()
@@ -632,11 +795,12 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale)
+  tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, avancement)
 
   vieTotale = fightLevel1(vieTotale)
   
   #niv5
+  avancement = 5
   suite = input()
   print("Vous vous enfoncez dans la forêt")
   suite = input()
@@ -649,7 +813,6 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale):
   print("Il vous reste", vieTotale, "points de vie")
 
   return inventaire, argent, arme, monBrave, nom, vieTotale
-  
 
 def tuRebrousse2 (renoncer,inventaire, argent, arme, monBrave, nom, vieTotale):
   if renoncer == 2:
@@ -657,8 +820,8 @@ def tuRebrousse2 (renoncer,inventaire, argent, arme, monBrave, nom, vieTotale):
     magasin(inventaire, argent, arme, monBrave, nom, vieTotale)
     moulin(inventaire, argent, arme, monBrave, nom, vieTotale)
 
-
 def villageAbandonne(inventaire, argent, arme, monBrave, nom, vieTotale):
+  lieuvisite.append("village")
   print("Vous continuez votre aventure, et vos pas vous emmènent à l’orée d’un vieux village.")
   suite = input()
   print("Que faire ?")
@@ -718,6 +881,7 @@ def villageAbandonne(inventaire, argent, arme, monBrave, nom, vieTotale):
     suite = input()
     print("Vous gravez...")
     gravure = input()
+    print("Voilà vous avez laissé une trace de votre passage...Les prochaines personnes assez courageuse pour entrer dans cette ville trouveront ce message:", gravure)
   elif "loupe" in inventaire:
     print("Vous balladez votre main sur le tronc de l'arbre et vous remarquez des petites griffures")
     suite = input()
@@ -828,15 +992,14 @@ def villageAbandonne(inventaire, argent, arme, monBrave, nom, vieTotale):
 
   return inventaire, argent, arme, monBrave, nom, vieTotale
 
-
 def tuRebrousse3 (abandonner,inventaire, argent, arme, monBrave, nom, vieTotale):
   if abandonner == 2:
     print("Cet endroit à l'air sent le piège... Je préfère ne pas m'y risquer")
     magasin(inventaire, argent, arme, monBrave, nom, vieTotale)
     pont(inventaire, argent, arme, monBrave, nom, vieTotale)
 
-
 def moulin(inventaire, argent, arme, monBrave, nom, vieTotale):
+  lieuvisite.append("moulin")
   print("Vous continuez votre aventure, et traversant à travers un pré recouvert de fleurs,vous tombez sur un champ de blé au fond duquel se trouve un moulin.")
   suite = input()
   print("Vous traversez le champ de blé, en y arrachant un épi au passage")
@@ -914,55 +1077,64 @@ def moulin(inventaire, argent, arme, monBrave, nom, vieTotale):
     print("Voix d'homme: Je te donnerai ce que tu veux si tu peux me donner 200 pièces")
     suite = input()
     if argent < 200:
-      print ("Vous n'avez pas assez d'argent")
-      soudoyer = 2
+      print ("Vous n'avez pas assez d'argent ")
+      abandonner = 2
+      tuRebrousse3 (abandonner,inventaire, argent, arme, monBrave, nom, vieTotale)
+
     elif argent >= 200:
-      print ("Vous...")
+      print ("Vous avez ",argent," pièces")
       print ("1. Lui donnez 200 pièces")
       print ("2. Ne lui donnez rien.")
       amadouer = None
-    while amadouer not in [1, 2]:
-      try:
-        amadouer = int(input())
-      except ValueError:
-        print("Vous devez faire un choix")
-      pass
+      while amadouer not in [1, 2]:
+        try:
+          amadouer = int(input())
+        except ValueError:
+          print("Vous devez faire un choix")
+        pass
+      if amadouer == 1:
+        finMoulin(inventaire, argent, arme, monBrave, nom, vieTotale)
 
-  elif soudoyer == 2 or amadouer == 2:
+  elif soudoyer == 2 :
     abandonner = 2
     tuRebrousse3 (abandonner,inventaire, argent, arme, monBrave, nom, vieTotale)
   
-  elif "baie" in inventaire and soudoyer == 3 or amadouer == 1:
-    print("3. J’ai un cadeau pour vous monsieur. Laissez-moi vous l’offrir s’il vous plait…")
-    suite = input()
-    print ("L’homme ouvre alors la porte, intrigué")
-    suite = input()
-    print ("Vieux meunier: Oh ! Cela fait si longtemps que je n’ai pas eu de cadeaux ! Entrez", monbrave, "venez me raconter vos aventures et vous réchauffer !")
-    suite = input()
-    print ("Après avoir vous êtres installé près du feu, vous racontez votre histoire au vieux meunier.")
-    suite = input()
-    print("Vieux meunier: Je suis désolé de ce qui vous arrive et je vous demande pardon pour mon accueil peu chaleureux. Tenez du pain pour me faire pardonner de mon comportement")
-    inventaire.append("pain")
-    suite = input()
-    print("Vieux meunier: C’est une grande aventure que vous entreprenez-là… J’ai peut être connaissance de quelqu’un qui pourra vous aider.")
-    suite = input()
-    print("Vous: Ah oui !? Qui donc ?")
-    suite = input()
-    print("Vieux meunier: Mon vieil ami le gardien du pont. Il voit tous les jours des dizaines d’individus différents passer. Il aura peut-être vu quelque chose de suspect. Allez le voir de ma part.")
-    suite = input()
-    print("Après une bonne nuit de sommeil, vous sortez du moulin...")
-    suite = input()
-    print("Sur le retour, vous croisez des rats et perdez 2 pv")
-    vieTotale -2
+  elif "baie" in inventaire and soudoyer == 3:
+    finMoulin(inventaire, argent, arme, monBrave, nom, vieTotale)
+
+def finMoulin(inventaire, argent, arme, monBrave, nom, vieTotale):
+  print("3. J’ai un cadeau pour vous monsieur. Laissez-moi vous l’offrir s’il vous plait…")
+  suite = input()
+  print ("L’homme ouvre alors la porte, intrigué")
+  suite = input()
+  print ("Vieux meunier: Oh ! Cela fait si longtemps que je n’ai pas eu de cadeaux ! Entrez", monBrave, "venez me raconter vos aventures et vous réchauffer !")
+  suite = input()
+  print ("Après avoir vous êtres installé près du feu, vous racontez votre histoire au vieux meunier.")
+  suite = input()
+  print("Vieux meunier: Je suis désolé de ce qui vous arrive et je vous demande pardon pour mon accueil peu chaleureux. Tenez du pain pour me faire pardonner de mon comportement")
+  inventaire.append("pain")
+  suite = input()
+  print("Vous en mangez un morceau et regagnez 10 points de vie")
+  vieTotale +10
+  suite = input()
+  print("Vieux meunier: C’est une grande aventure que vous entreprenez-là… J’ai peut être connaissance de quelqu’un qui pourra vous aider.")
+  suite = input()
+  print("Vous: Ah oui !? Qui donc ?")
+  suite = input()
+  print("Vieux meunier: Mon vieil ami le gardien du pont. Il voit tous les jours des dizaines d’individus différents passer. Il aura peut-être vu quelque chose de suspect. Allez le voir de ma part.")
+  suite = input()
+  print("Après une bonne nuit de sommeil, vous sortez du moulin...")
+  suite = input()
+  print("Sur le retour, vous croisez des rats et perdez 2 pv")
+  vieTotale -2
   return inventaire, argent, arme, monBrave, nom, vieTotale
 
 def tuRebrousse4 (delaisser,inventaire, argent, arme, monBrave, nom, vieTotale):
  if delaisser == 2:
    print("Cet endroit à l'air sent le piège... Je préfère ne pas m'y risquer")
-   magasin(inventaire, argent, arme, monBrave, nom, vieTotale)
+   magasin(inventaire, argent, arme, monBrave, nom, vieTotale) 
  
- 
-def enigme (devinette):
+def enigme (devinette,inventaire, argent, arme, monBrave, nom, vieTotale):
  if devinette == 1:
    print("Vous: Je ne cherche pas à passer, je cherche juste des informations. Pouvez-vous répondre à mes questions ?")
    suite = input()
@@ -1005,7 +1177,6 @@ def enigme (devinette):
    print("Vous: Je ne fais pas confiance à cet homme... passons notre chemin")
    delaisser = 2
    tuRebrousse4 (delaisser,inventaire, argent, arme, monBrave, nom, vieTotale)
- 
  
 def pont(inventaire, argent, arme, monBrave, nom, vieTotale):
  print("Vous continuez votre aventure, et vous tombez rapidement sur un ravin énorme")
@@ -1058,16 +1229,16 @@ def continuer(inventaire, argent, arme, monBrave, nom, vieTotale):
  elif "pain" not in inventaire:
    print("Vous: Merci beaucoup !")
    suite = input()
- 
- return inventaire, argent, arme, monBrave, nom, vieTotale
 
+ lieuvisite.append("pont")
+ return inventaire, argent, arme, monBrave, nom, vieTotale,lieuvisite
 
 #Début de l'aventure
 #Run the game different parts of the game
-def Aventure(inventaire, argent, arme, monBrave, nom): 
+def Aventure(inventaire, argent, arme, monBrave, nom, vieTotale): 
   print ("Commencer l'aventure !")
   suite = input()
-  foret (inventaire, argent, arme, monBrave, nom, vieTotale)
+  foret (inventaire, argent, arme, monBrave, nom, vieTotale, avancement)
   villageAbandonne(inventaire, argent, arme, monBrave, nom, vieTotale)
   moulin(inventaire, argent, arme, monBrave, nom, vieTotale)
   pont(inventaire, argent, arme, monBrave, nom, vieTotale)
@@ -1075,7 +1246,7 @@ def Aventure(inventaire, argent, arme, monBrave, nom):
 #Run the game
 def Jeu():
   inventaire, argent, arme, monBrave, nom = Intro()
-  Aventure(inventaire, argent, arme, monBrave, nom)
+  Aventure(inventaire, argent, arme, monBrave, nom, vieTotale)
 
 Jeu()
 
