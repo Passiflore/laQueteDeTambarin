@@ -85,8 +85,8 @@ def sortir(peur):
 def nomSexe(nom,sexe):
   monBrave = "mon brave"
   if nom == "Triceratops":
-    vie = vie + 10
-    print("Votre vie est de",vie)
+    vieTotale = vieTotale + 10
+    print("Votre vie est de",vieTotale)
   if nom =="Boubou":
     print("Bonus de crâne chauve")
   if sexe == 1:
@@ -481,15 +481,13 @@ def fightLevel1(vieTotale, forceMin, forceMax, argent):
     argentGagne = None
     vieRestante = vieTotale
 
-    monsters = ["rat", "sanglier", "troll",
-                "blaireau", "serpent", "crapeau", "feu follet"]
+    monsters = ["rat", "sanglier", "troll", "blaireau", "serpent", "crapeau", "feu follet"]
     monstersLifeChoice = [10, 15, 15, 20, 25, 30]
     monsterLife = secrets.choice(monstersLifeChoice)
 
     print("Vous vous êtes trop enfoncés dans la forêt.")
     suite = input()
-    print("Vous arrivez face à un", secrets.choice(
-        monsters), "et un", secrets.choice(monsters), ".")
+    print("Vous arrivez face à un", secrets.choice(monsters), "et un", secrets.choice(monsters), ".")
     print("\n", "-" * 50, "\n")
     suite = input()
 
@@ -525,7 +523,7 @@ def fightLevel1(vieTotale, forceMin, forceMax, argent):
             suite = input()
             print("Vous vous retrouvez au magasin général.")
             magasin()
-            return vieRestante
+            return vieRestante, argent
         else:
             print("Les monstres vous frappent et vous enlèvent",
                   monsterAttack, "points de vie.")
@@ -687,7 +685,7 @@ def choixDirection2(inventaire, argent, arme, monBrave, nom, vieTotale):
   print("yo")
 
 
-def tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, avancement):
+def tuRebrousse1 (rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement):
   if rebrousser == 2:
     print_slow("Vous : Les forêts ça fait toujours peur, c'est inquiétant, il serait plus judicieux de rebrousser chemin...")
     suite = input()
@@ -715,7 +713,7 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax
     pass
   tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement )
 
-  vieTotale = fightLevel1(vieTotale, forceMin, forceMax, argent)
+  vieTotale, argent = fightLevel1(vieTotale, forceMin, forceMax, argent)
 
   #niv2
   avancement = 2
@@ -736,7 +734,7 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax
     pass
   tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement )
 
-  vieTotale = fightLevel1(vieTotale, forceMin, forceMax, argent)
+  vieTotale, argent = fightLevel1(vieTotale, forceMin, forceMax, argent)
   
   #niv3
   avancement = 3
@@ -748,6 +746,7 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax
     suite = input()
     print_slow("Vous : TADAM ! Un pieu en bois")
     inventaire.append("Pieu")
+    suite = input()
   else :
     print("Vous le jettez")
     suite = input()
@@ -763,14 +762,14 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax
     pass
   tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement )
 
-  vieTotale = fightLevel1(vieTotale, forceMin, forceMax, argent)
+  vieTotale, argent = fightLevel1(vieTotale, forceMin, forceMax, argent)
 
   #niv4
   avancement = 4
   suite = input()
   print("Vous arrivez à l’orée d’une clairière, qui possède un magnifique lac. Dans l’eau, une femme profite de la chaleur du soleil sur son corps.")
   suite = input()
-  print("Parler à la femme")
+  print("Vous vous avancez vers la femme")
   suite = input()
   print_slow("\033[1;32;40m Femme: Bonjour mon enfant. Veux-tu que je te lise ton avenir ?\n\033[m")
 
@@ -793,6 +792,7 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax
     print_slow("\033[1;32;40m Femme: un avenir incertain...\033[m")
     suite = input()
     print("\033[1;33;40m Cela ne vous est pas très utile...\n\033[m")
+    suite = input()
   
   print("\033[0;37;40m Que faire ?\033[m")
   print("1.Continuer")
@@ -806,7 +806,7 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax
     pass
   tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement )
 
-  vieTotale = fightLevel1(vieTotale, forceMin, forceMax, argent)
+  vieTotale, argent = fightLevel1(vieTotale, forceMin, forceMax, argent)
   
   #niv5
   avancement = 5
@@ -822,7 +822,7 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax
   print("Il vous reste", vieTotale, "points de vie.")
   print("Vous avez", argent, "pièces.")
 
-  return inventaire, argent, arme, monBrave, nom, vieTotale
+  return inventaire, argent, arme, monBrave, nom, vieTotale, argent
 
 def tuRebrousse2 (renoncer,inventaire, argent, arme, monBrave, nom, vieTotale):
   if renoncer == 2:
@@ -846,7 +846,6 @@ def villageAbandonne(inventaire, argent, arme, monBrave, nom, vieTotale):
     pass
   tuRebrousse2 (renoncer,inventaire, argent, arme, monBrave, nom, vieTotale)
   
-  suite = input()
   print("Vous entrez dans le village, en ruine. Il reste à peine une ou deux bâtisses qui tiennent debout…")
   suite = input()
   print("Vous avancez et vous tombez nez à nez avec un vieux puit en pierres vermoulues")
@@ -869,6 +868,7 @@ def villageAbandonne(inventaire, argent, arme, monBrave, nom, vieTotale):
     print("Finalement au bout de 5-6 seconde vous entendez enfin un faible bruit d'eau")
     suite = input()
     print("Qui aurait cru que ce puit soit si profond !? Comment faisient les villageois pour puiser leur eau ?")
+  suite = input() 
   print("Que faire ?")
   print("1.Continuer dans le village")
   print("2.Renoncer à l'exploration")
@@ -1243,7 +1243,7 @@ def continuer(inventaire, argent, arme, monBrave, nom, vieTotale):
  lieuvisite.append("pont")
  return inventaire, argent, arme, monBrave, nom, vieTotale,lieuvisite
 
-def EntreeCiadas():
+def EntreeCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement):
     # niv 1
     print("Vous arrivez à l'orée de la grande ville de Ciadas,")
     suite = input()
@@ -1266,7 +1266,7 @@ def EntreeCiadas():
     print("Garde 1: Halte-là, déclinez votre identité !")
     suite = input()
     print(
-        "Vous: Je suis [nom à mettre] de la défunte tavernière de la ville de Qululu")
+        "Vous: Je suis",nom,sexe,"de la défunte tavernière de la ville de Qululu")
     suite = input()
     print("Garde 2: Je suis désolé pour votre mère...")
     suite = input()
@@ -1300,7 +1300,7 @@ def EntreeCiadas():
 ####################################
 
 
-def Ciadas():
+def forteresseCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement):
     print("Vous: Voyons si on peut trouver une autre entrée...")
     suite = input()
     print("Vous faites le tour de la forteresse...")
@@ -1352,7 +1352,7 @@ def Ciadas():
 ####################################
 
 
-def magicien():
+def magicien(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement):
     print("Vous continuez votre aventure.")
     suite = input()
     print("Vous: Peut-être qu'en trouvant ce vieux magicien...")
@@ -1569,14 +1569,14 @@ def magicien():
     print("Vous: Ce vieux fou n'était donc pas si fou que cela...")
     suite = input()
 
-    final()
+    entreeChateau()
 
 ####################################
 ####################################
 ####################################
 
 
-def chifumi():
+def chifumi(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement):
     print("Magicien: Je ne m'attendais pas à ce que vous acceptiez... Mais soit !")
     suite = input()
     print("Magicien: Battons-nous !")
@@ -1674,7 +1674,7 @@ def chifumi():
 ####################################
 
 
-def salleDuTrone():
+def salleDuTrone(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement):
     print("Vous voici enfin arrivé à l'intérieur du château.")
     suite = input()
     print("La salle du trône est comble.")
@@ -1703,8 +1703,7 @@ def salleDuTrone():
     suite = input()
     print("Mais vous n'avez pas le temps pour cela.")
     suite = input()
-    print(
-        "Vous avez remarqué le Pape, caché dans un coin derrière le trône du seigneur.")
+    print("Vous avez remarqué le Pape, caché dans un coin derrière le trône du seigneur.")
     suite = input()
     print("...")
     suite = input()
@@ -1732,8 +1731,7 @@ def salleDuTrone():
     suite = input()
     print("Pape: Qui êtes vous ?!")
     suite = input()
-    print(
-        "Vous: Je suis [nom à insérer], fils de Lasung, la gérante du...")
+    print("Vous: Je suis",nom, monBrave,"fils de Lasung, la gérante du...")
     suite = input()
     print("Pape: Oui, oui... Je vois... Et que me vaut votre visite ?")
     suite = input()
@@ -1750,13 +1748,13 @@ def salleDuTrone():
     print("Vous: De quoi parlez-vous ?! Ma mère n'aurait jamais voulu mourir de la sorte !")
     suite = input()
     print("Vous lui foncez dessus.")
-    FightFinal()
+    fightFinal()
 
 ####################################
 ####################################
 ####################################
 
-def fightFinal(vieTotale, forceMin, forceMax):
+def fightFinal(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement):
   vieRestante = vieTotale
   monsterLife = 150
 
@@ -1774,7 +1772,7 @@ def fightFinal(vieTotale, forceMin, forceMax):
     print("Le Pape a", monsterLife, "points de vie.")
     suite = input()
 
-    if VieRestante > 0:
+    if vieRestante > 0:
       print("Vous frappez le Pape et lui enlevez",yourAttack, "points de vie.")
       monsterLife = monsterLife - yourAttack
       suite = input()
@@ -1804,7 +1802,7 @@ def fightFinal(vieTotale, forceMin, forceMax):
 ####################################
 ####################################
 
-def entreeChateau(inventaire, argent):
+def entreeChateau(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement):
   #######################
   #    Entree chateau   #
   #######################
@@ -2045,7 +2043,7 @@ def centrevilleCiadas():
 ####################################
 ####################################
 
-def taverneCiadas():
+def taverneCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement):
   print("Vous entrez dans la taverne.")
   suite = input()
   print("Les gens y parlent fort et l'alcool coule à flot")
@@ -2116,7 +2114,7 @@ def taverneCiadas():
       pass
 
 
-def retourChateauCiadas():
+def retourChateauCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement):
           print("Vous retournez à l'entrée du château")
           suite = input()
           if "cape" or "epee" or "invitation" in inventaire:
@@ -2154,10 +2152,11 @@ def retourChateauCiadas():
 def Aventure(inventaire, argent, arme, monBrave, nom, vieTotale): 
   print ("Commencer l'aventure !")
   suite = input()
-  foret (inventaire, argent, arme, monBrave, nom, vieTotale, avancement)
+  foret (inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, avancement)
   villageAbandonne(inventaire, argent, arme, monBrave, nom, vieTotale)
   moulin(inventaire, argent, arme, monBrave, nom, vieTotale)
   pont(inventaire, argent, arme, monBrave, nom, vieTotale)
+  
 
 #Run the game
 def Jeu():
