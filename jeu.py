@@ -975,7 +975,7 @@ def villageAbandonne(inventaire, argent, arme, monBrave, nom, vieTotale):
     except ValueError:
       print("Vous devez faire un choix")
     pass
-  tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite )
+  tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite)
   
   print("Vous atteignez le sommet du clocher")
   suite = input()
@@ -1303,7 +1303,7 @@ def forteresseCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMi
         suite = input()
         EntreeCiadas()
     suite = input()
-    print("Malheureusement vous 'navez rien de tel sur vous.")
+    print("Malheureusement vous n'avez rien de tel sur vous.")
     suite = input()
     print("Vous continuez de faire le tour de la forteresse,")
     suite = input()
@@ -1421,7 +1421,7 @@ def magicien(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, force
         try:
             choix = int(input())
             if choix == 1:
-                chifumi()
+                chifumi(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
             elif choix == 2:
                 suite = input()
                 print("Magicien: Bon... Je vais vous aider de toute façon, alors...")
@@ -1794,6 +1794,7 @@ def fightFinal(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, for
       print("Merci d'avoir testé notre jeu !")
       print('')
       return vieRestante
+      return gameOver()
     elif vieRestante <= 0:
       print("Vous tombez à terre, exténué !")
       suite = input()
@@ -1828,7 +1829,7 @@ def entreeChateau(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, 
     suite = input()
     print("les gardes vous laissent passer.")
     suite = input()
-    salleDuTrone()
+    salleDuTrone(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
   else:
     print("Vous vous avancez, mais la route vous est bien vite barrée.")
     suite = input()
@@ -1840,7 +1841,7 @@ def entreeChateau(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, 
     suite = input()
     print("Vous allez devoir trouver un autre moyen pour passer l'entrée du château...")
     suite = input()
-    centrevilleCiadas()
+    centrevilleCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite)
 
 #######################
 #     Centre-ville    #
@@ -2095,7 +2096,7 @@ def taverneCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, 
             suite = input()
             print("Il est enfin temps pour vous de vous rendre à cette cérémonie...")
             suite = input()
-            salleDuTrone()
+            salleDuTrone(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
           else:
             print("Vous essayez de crocheter la serrure... En vain.")
             suite = input()
@@ -2125,7 +2126,7 @@ def taverneCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, 
             suite = input()
             print("Vous vous levez précipitemment et vous échappez.")
             suite = input()
-            salleDuTrone()
+            salleDuTrone(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
         if choix == 2 :
             print("Vous vous approchez du vieil homme...")
             suite = input()
@@ -2149,7 +2150,7 @@ def taverneCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, 
             suite = input()
             print("Vous vous levez précipitemment et vous échappez.")
             suite = input()
-            salleDuTrone()
+            salleDuTrone(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
       except ValueError:
         print("Vous devez faire un choix")
       pass
@@ -2163,7 +2164,7 @@ def retourChateauCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forc
             print("...")
             suite = input()
             print("Avec vos précieuses acquisitions, vous réussissez à passer sans peine devant les gardes !")
-            salleDuTrone()
+            salleDuTrone(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
           else:
             print("...")
             suite = input()
@@ -2178,11 +2179,11 @@ def retourChateauCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forc
               try:
                 choix = int(input())
                 if choix == 1:
-                  magicien()
+                  magicien(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
                 elif choix == 2:
-                  taverneCiadas()
+                  taverneCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
                 elif choix == 3:
-                  tuRebrrousses()
+                  tuRebrrousses1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite)
               except ValueError:
                 print("Vous devez faire un choix")
             pass
