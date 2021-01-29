@@ -576,14 +576,15 @@ def acheter(choixMagasin,inventaire, argent, arme, monBrave, nom, vieTotale):
     return argent-150, arme, vieTotale
   elif choixMagasin == 2 and argent >= 100:
     arme = "hache"
-    print(argent)
+    print("Vous avez maintenant une hache")
     return  argent-100, arme, vieTotale
-    print("Vous a choisissez")
   elif choixMagasin == 3 and argent >= 25:
     arme = "bâton"
+    print("Vous avez maintenant un bâton")
     return argent-25 , arme, vieTotale
   elif choixMagasin == 4 and argent >= 20:
     arme = "marteau"
+    print("Vous avez maintenant un marteau")
     return argent-20, arme, vieTotale
   elif choixMagasin == 5 and argent >= 5:
     print("Vous manger la pomme et gagnez 5 points de vie")
@@ -610,15 +611,19 @@ def acheter(choixMagasin,inventaire, argent, arme, monBrave, nom, vieTotale):
     choixDirection2(inventaire, argent, arme, monBrave, nom, vieTotale)
   elif choixMagasin == 10 and argent >= 100:
     arme = "arbalète"
+    print("Vous avez maintenant une arbalète")
     return argent-100, vieTotale, arme
   elif choixMagasin == 11 and argent >= 125:
     arme = "epee"
+    print("Vous avez maintenant une épée")
     return argent-125, vieTotale, arme
   elif choixMagasin == 12 and argent >= 130:
     arme = "lance"
+    print("Vous avez maintenant une lance")
     return argent-130, vieTotale, arme
   elif choixMagasin == 13 and argent >= 165:
-    arme = "masse"
+    inventaire.append("masse")
+    print("Vous avez maintenant une masse")
     return argent-165, vieTotale, arme
   else:
     print("Vous n'avez pas assez d'argent pour cela, refaites un choix:")
@@ -654,18 +659,27 @@ def acheter(choixMagasin,inventaire, argent, arme, monBrave, nom, vieTotale):
 def choixDirection2(inventaire, argent, arme, monBrave, nom, vieTotale):
   suite = input()
   print("Où voulez vous aller ?")
-  print("1.La forêt")
+  print("1. La forêt")
   if "foret" in lieuvisite:
-    print("2.Le village abandonné")
+    print("2. Le village abandonné")
   if "village" in lieuvisite:
-    print("3.Le moulin")
+    print("3. Le moulin")
   if "moulin" in lieuvisite:
-    print("4.Le pont")
+    print("4. Le pont")
   if "pont" in lieuvisite:
-    print("5.L'entrée de la ville")
+    print("5. L'entrée de la ville")
+  if "entree" in lieuvisite:
+    print("6. Faire le tour de la forteresse")
+    print("7. Chercher le magicien")
+  if "entreechateau" in lieuvisite:
+    print("8. L'Entrée chateau")
+    print("9. Le centre-ville de Ciadas")
+  if "centreville" in lieuvisite:
+    print("10. La taverne")
+  
 
   destination  = None
-  while destination not in [1, 2, 3, 4, 5]:
+  while destination not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
     try:
       destination = int(input())
     except ValueError:
@@ -679,9 +693,19 @@ def choixDirection2(inventaire, argent, arme, monBrave, nom, vieTotale):
     moulin(inventaire, argent, arme, monBrave, nom, vieTotale)
   if destination == 4:
     pont(inventaire, argent, arme, monBrave, nom, vieTotale)
-  if destination == 4:
+  if destination == 5:
     EntreeCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite )
-
+  if destination == 6:
+    forteresseCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
+  if destination == 7:
+    magicien(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
+  if destination == 8:
+    entreeChateau(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
+  if destination == 9:
+    centrevilleCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite)
+  if destination == 10:
+    taverneCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
+  
 #Retour en arrière, direction le magasin
 def tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite ):
   if rebrousser == 2:
@@ -1301,7 +1325,7 @@ def forteresseCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMi
         suite = input()
         print("Vous entrez dans la ville...")
         suite = input()
-        EntreeCiadas()
+        entreeChateau(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
     suite = input()
     print("Malheureusement vous n'avez rien de tel sur vous.")
     suite = input()
@@ -1337,7 +1361,6 @@ def forteresseCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMi
 
 
 def magicien(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax):
-    lieuvisite.append("magicien")
     print("Vous continuez votre aventure.")
     suite = input()
     print("Vous: Peut-être qu'en trouvant ce vieux magicien...")
@@ -1816,6 +1839,7 @@ def entreeChateau(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, 
   #######################
   #    Entree chateau   #
   #######################
+  lieuvisite.append("entreechateau")
   print("Maintenant que vous êtes dans la ville, il vous faut réussir à accéder au château.")
   suite = input()
   print("Vous remontez les rues de la ville jusqu'à arriver aux portes du château.")
@@ -1847,6 +1871,7 @@ def entreeChateau(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, 
 #     Centre-ville    #
 #######################  
 def centrevilleCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite):
+  lieuvisite.append("centreville")
   print("Vous redescendez vers le centre-ville.")
   suite = input()
   print("Vous: Il y aura bien quelque chose qui pourra me servir...")
@@ -2201,7 +2226,8 @@ def Aventure(inventaire, argent, arme, monBrave, nom, vieTotale):
   print("fin")
   
   
-
+def gameOver():
+  return("FIN")
 #Run the game
 def Jeu():
   inventaire, argent, arme, monBrave, nom = Intro()
