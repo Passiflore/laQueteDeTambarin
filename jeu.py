@@ -1817,7 +1817,7 @@ def fightFinal(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, for
       print("Le Pape vous jette par dessus une fenêtre.")
       suite = input()
       print("Vous êtes ramené à l'entrée de la ville.")
-      EntreeCiadas()
+      EntreeCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite)
       return vieRestante
     else:
       print("Le Pape vous attaque et vous enlève",monsterAttack, "points de vie.")
