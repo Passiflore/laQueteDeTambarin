@@ -82,11 +82,10 @@ def sortir(peur):
 
 def nomSexe(nom,sexe):
   monBrave = "mon brave"
-  if nom == "Triceratops":
-    vieTotale = vieTotale + 10
-    print("Votre vie est de",vieTotale)
+  if nom == "Pouet":
+    print("Pouet pouet")
   if nom =="Boubou":
-    print("Bonus de crâne chauve")
+    print("Oh c'est donc vous Monsieur Bourienne !")
   if sexe == 1:
     monBrave = "jeune fille"
     print("Moi, je suis",nom,"la fille de la gérante de ce bar. Je l’aide en cuisine. Bienvenue à vous dans notre beau village !")
