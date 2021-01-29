@@ -1253,7 +1253,7 @@ def EntreeCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, f
 
     print("Vous arrivez à l'orée de la grande ville de Ciadas,")
     suite = input()
-    print("domaine du roi Olonas, qui règne sur la contrée de Tambarin.")
+    print("domaine du roi Chomelus, qui règne sur la contrée de Tambarin.")
     suite = input()
     print("Que faire ?")
     print("1. Entrer dans la ville")
@@ -1296,7 +1296,7 @@ def EntreeCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, f
     tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite)
     if rebrousse == 1:
       forteresseCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
-    elif choix == 3:
+    elif rebrousse == 3:
       magicien(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
     suite = input()
 
@@ -2000,7 +2000,7 @@ def centrevilleCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceM
   while rebrousse not in [1, 2, 3]:
     try:
       rebrousse = int(input())
-      if choix == 1:
+      if rebrousse == 1:
         print("Vous entrez dans l'Eglise.")
         suite = input()
         print("...")
@@ -2037,7 +2037,7 @@ def centrevilleCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceM
             print("Vous devez faire un choix")
           pass
       tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite )
-      if choix == 3:
+      if rebrousse == 3:
         print("Vous: On va chercher autre chose...")
         suite = input()
     except ValueError:
@@ -2054,14 +2054,14 @@ def centrevilleCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceM
     print("1. Se rendre à l'entrée du château")
     print("2. Rebrousser chemin")
     print("3. Entrer dans la taverne")
-    choix = None
-    while choix not in [1, 2, 3]:
+    rebrousse = None
+    while rebrousse not in [1, 2, 3]:
       try:
-        choix = int(input())
-        if choix == 1:
+        rebrousse = int(input())
+        if rebrousse == 1:
           retourChateauCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
         tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite )
-        if choix == 3:
+        if rebrousse == 3:
           taverneCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
       except ValueError:
         print("Vous devez faire un choix")
@@ -2105,7 +2105,7 @@ def taverneCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, 
       try:
         choix = int(input())
         if choix == 1:
-          if "couteau-suisse" in inventaire:
+          if "couteau" in inventaire:
             print("Vous crochetez la serrure.")
             suite = input()
             print("...")
@@ -2192,14 +2192,14 @@ def retourChateauCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forc
             print("1. Chercher de l'aide ailleurs")
             print("2. Rebrousser chemin")
             print("3. Se rendre à la taverne")
-            choix = None
-            while choix not in [1, 2, 3]:
+            rebrousse = None
+            while rebrousse not in [1, 2, 3]:
               try:
-                choix = int(input())
-                if choix == 1:
+                rebrousse = int(input())
+                if rebrousse == 1:
                   magicien(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
                 tuRebrrousses1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite)
-                if choix == 3:
+                if rebrousse == 3:
                   taverneCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
               except ValueError:
                 print("Vous devez faire un choix")
