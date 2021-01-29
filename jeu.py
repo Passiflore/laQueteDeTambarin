@@ -703,7 +703,6 @@ def choixDirection2(inventaire, argent, arme, monBrave, nom, vieTotale):
     centrevilleCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite)
   if destination == 10:
     taverneCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
-  
 #Retour en arrière, direction le magasin
 def tuRebrousse1(rebrousser,inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax, lieuvisite ):
   if rebrousser == 2:
@@ -1204,7 +1203,6 @@ def enigme (devinette,inventaire, argent, arme, monBrave, nom, vieTotale):
    print("Vous: Je relève le défi, je vais répondre à votre enigme... ")
    suite = input()
    print("Homme étrange: Tu te crois bien intelligent")
-   suite = input()
    suite = input()
    reponse = input("Vous: La réponse est..." ).lower()
    if reponse == "homme" or reponse == "l'homme" or reponse == "humain" or reponse == "l'humain":
@@ -1812,7 +1810,6 @@ def fightFinal(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, for
       print('')
       print("Merci d'avoir testé notre jeu !")
       print('')
-      return vieRestante
       return gameOver()
     elif vieRestante <= 0:
       print("Vous tombez à terre, exténué !")
@@ -2219,6 +2216,7 @@ def Aventure(inventaire, argent, arme, monBrave, nom, vieTotale):
   
 def gameOver():
   return("FIN")
+
 #Run the game
 def Jeu():
   inventaire, argent, arme, monBrave, nom = Intro()
