@@ -788,7 +788,7 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax
   suite = input()
   print("Vous vous avancez vers la femme")
   suite = input()
-  print_slow("\033[1;32;40m Femme: Bonjour mon enfant. Veux-tu que je te lise ton avenir ?\n\033[m")
+  print_slow("Femme: Bonjour mon enfant. Veux-tu que je te lise ton avenir ?")
 
   print("1.Oui")
   print("2.Non")
@@ -800,18 +800,18 @@ def foret(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax
       print("Vous devez faire un choix")
     pass
   if avenir == 1:
-    print_slow("\033[1;37;40m Vous: Vous me semblez bien sage, que pouvez-vous me dire sur mon futur ?\033[m")
+    print_slow("Vous: Vous me semblez bien sage, que pouvez-vous me dire sur mon futur ?")
     suite = input()
-    print_slow("\033[1;32;40m Femme: Je vois...\033[m")
+    print_slow("Femme: Je vois...")
     suite = input()
-    print_slow("\033[1;32;40m Femme: dans l'eau claire...\033[m")
+    print_slow("Femme: dans l'eau claire...")
     suite = input()
-    print_slow("\033[1;32;40m Femme: un avenir incertain...\033[m")
+    print_slow("Femme: un avenir incertain...")
     suite = input()
-    print("\033[1;33;40m Cela ne vous est pas très utile...\n\033[m")
+    print("Cela ne vous est pas très utile...")
     suite = input()
   
-  print("\033[0;37;40m Que faire ?\033[m")
+  print("3[0;37;40m Que faire ?")
   print("1.Continuer")
   print("2.Rebrousser chemin")
   rebrousser  = None
@@ -1444,15 +1444,15 @@ def magicien(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, force
             elif choix == 2:
                 suite = input()
                 print("Magicien: Bon... Je vais vous aider de toute façon, alors...")
+                suite = input()
+                print("Magicien: Mais refuser de jouer avec un vieil homme comme moi...")
+                suite = input()
+                print("Magicien: C'est vraiment ingrat.")
         except ValueError:
             print("Vous devez faire un choix")
         pass
     suite = input()
     print("Il vous ouvre la porte.")
-    suite = input()
-    print("Magicien: Mais refuser de jouer avec un vieil homme comme moi...")
-    suite = input()
-    print("Magicien: C'est vraiment ingrat.")
     suite = input()
     print("Vous entrez à l'intérieur de la ferme.")
     suite = input()
@@ -1532,7 +1532,7 @@ def magicien(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, force
     print("Il est grand temps de finir cette aventure...")
     suite = input()
     print("Que faire ?")
-    print("1. Se rendre à Ulululu")
+    print("1. Se rendre à Ciadas")
     print("2. Rebrousser chemin")
     rebrousser = None
     while rebrousser not in [1, 2]:
@@ -2203,7 +2203,7 @@ def retourChateauCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forc
                   taverneCiadas(inventaire, argent, arme, monBrave, nom, vieTotale, forceMin, forceMax)
               except ValueError:
                 print("Vous devez faire un choix")
-            pass
+              pass
 
 
 #Début de l'aventure
